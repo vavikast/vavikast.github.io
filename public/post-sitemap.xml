@@ -8,7 +8,15 @@
 
     <url>
         <loc>http://www.vavikast.com/article/hexo-theme-huweihuang/</loc>
-        <lastmod>2019-06-23T02:56:23.013Z</lastmod>
+        <lastmod>2019-07-09T06:54:00.513Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://www.vavikast.com/article/CFSSL%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95%E9%87%8D%E6%96%B0%E6%95%B4%E7%90%86%E8%AF%B4%E6%98%8E/</loc>
+        <lastmod>2019-07-09T06:54:00.512Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
