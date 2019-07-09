@@ -1,8 +1,8 @@
 ---
 layout: "about"
 title: "About"
-date: 2017-10-03 10:48:33
-description: "走在成为极客的路上"
+date: 2019-07-09 10:48:33
+description: "持续努力中"
 header-img: "/img/header_img/about.jpg"
 aplayer: true
 fixed: false
@@ -10,29 +10,25 @@ fixed: false
 
 ### 一句话
 
->Just do it !    (翻译：我只是个搞 IT的！哭笑脸)
+>Just do it !    (翻译：莫逼逼，就是干)
 
 ### 关于我
 
->一个莫名其妙的，喜欢敲代码，喜欢研究技术的，表面上高冷、不苟言笑的，
->
->偶尔又嬉皮笑脸，偶尔又特立独行的，双重性格的技术爱好者！
+>想得太多，做的太少；担心太多，行动太少
 
 ### 兴趣方向
 
-> 容器云（Docker、Kubernetes等）相关生态技术研究。
+> windows，虚拟化（vmware+kvm），Docker、Kubernetes等。
 
 ### 参与社区
 
- > CSDN博客:http://blog.csdn.net/huwh_
+ > 51cto博客:https://blog.51cto.com/9406836
  >
- > Github:https://github.com/huweihuang
+ > Github:https://github.com/vavikast
  >
- > 阿里云栖社区:https://yq.aliyun.com/u/huweihuang
- >
- > DockOne社区:http://dockone.io/people/胡伟煌
+ > DockOne社区:http://dockone.io/people/Felixw
 
 ### 联系我
 
->Email: huweihuang@foxmail.com
+>Email: vavikast@gmail.com
 
