@@ -2,78 +2,78 @@
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
     <url>
-        <loc>http://www.vavikast.com/tags/ha/</loc>
-        <lastmod>2019-07-09T07:55:04.018Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>http://www.vavikast.com/tags/etcd/</loc>
-        <lastmod>2019-07-09T07:58:51.289Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>http://www.vavikast.com/tags/openvpn/</loc>
-        <lastmod>2019-07-09T08:01:13.504Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>http://www.vavikast.com/tags/docker/</loc>
-        <lastmod>2019-07-09T08:01:13.504Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>http://www.vavikast.com/tags/easyrsa/</loc>
-        <lastmod>2019-07-09T08:01:13.504Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>http://www.vavikast.com/tags/vmware/</loc>
-        <lastmod>2019-07-09T08:04:26.816Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>http://www.vavikast.com/tags/prometheus/</loc>
-        <lastmod>2019-07-09T08:04:26.816Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>http://www.vavikast.com/tags/life/</loc>
-        <lastmod>2019-07-09T08:33:18.498Z</lastmod>
+        <loc>http://www.vavikast.com/tags/cfssl/</loc>
+        <lastmod>2019-07-10T04:48:18.202Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>http://www.vavikast.com/tags/cka/</loc>
-        <lastmod>2019-07-10T01:39:51.791Z</lastmod>
+        <lastmod>2019-07-10T04:48:18.202Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
-        <loc>http://www.vavikast.com/tags/cfssl/</loc>
-        <lastmod>2019-07-10T01:59:26.088Z</lastmod>
+        <loc>http://www.vavikast.com/tags/vmware/</loc>
+        <lastmod>2019-07-10T04:48:18.217Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://www.vavikast.com/tags/prometheus/</loc>
+        <lastmod>2019-07-10T04:48:18.217Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://www.vavikast.com/tags/life/</loc>
+        <lastmod>2019-07-10T04:48:18.218Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://www.vavikast.com/tags/ha/</loc>
+        <lastmod>2019-07-10T04:48:18.226Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://www.vavikast.com/tags/etcd/</loc>
+        <lastmod>2019-07-10T04:48:18.227Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>http://www.vavikast.com/tags/kubernetes/</loc>
-        <lastmod>2019-07-10T01:59:26.088Z</lastmod>
+        <lastmod>2019-07-10T04:48:18.227Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://www.vavikast.com/tags/openvpn/</loc>
+        <lastmod>2019-07-10T04:48:18.228Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://www.vavikast.com/tags/docker/</loc>
+        <lastmod>2019-07-10T04:48:18.228Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://www.vavikast.com/tags/easyrsa/</loc>
+        <lastmod>2019-07-10T04:48:18.228Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
