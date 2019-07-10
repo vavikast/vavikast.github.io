@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          kubernetes v1.14.3 HA集群安装 - vavikast | Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://www.vavikast.com/article/kubernetes-v1-14-3-HA集群安装/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#etcd" title="etcd">etcd</a>
+                            
+                              <a class="tag" href="/tags/#ha" title="ha">ha</a>
+                            
+                              <a class="tag" href="/tags/#kubernetes" title="kubernetes">kubernetes</a>
+                            
+                        </div>
+                        <h1>kubernetes v1.14.3 HA集群安装</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by vavikast on
+                            2019-07-09
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">vavikast</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h2 id="kubernetes-v1143-ha集群安装">kubernetes v1.14.3 HA集群安装</h2>
+<h3 id="目录结构">目录结构</h3>
+<ol>
+<li>
+<h5 id="集群规划">集群规划</h5>
+<table>
+<thead>
+<tr>
+<th>主机名</th>
+<th>ip</th>
+<th>角色</th>
+<th>组件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>master1-3</td>
+<td>192.168.14.138-140</td>
+<td>master+etcd</td>
+<td>etcd kube-apiserver kube-controller-manager kubectl kubeadm kubelet kube-proxy flannel</td>
+</tr>
+<tr>
+<td>worker1</td>
+<td>192.168.14.141</td>
+<td>node</td>
+<td>kubectl kubeadm kubelet kube-proxy flannel</td>
+</tr>
+<tr>
+<td>vip</td>
+<td>192.168.14.142</td>
+<td>实现apiserver的高可用</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<h5 id="组件版本">组件版本</h5>
+<table>
+<thead>
+<tr>
+<th>组件</th>
+<th>版本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>centos</td>
+<td>7.3.1611</td>
+</tr>
+<tr>
+<td>kernel</td>
+<td>3.10.0-957.el7.x86_64</td>
+</tr>
+<tr>
+<td>kubeadm</td>
+<td>v1.14.3</td>
+</tr>
+<tr>
+<td>kubelet</td>
+<td>v1.14.3</td>
+</tr>
+<tr>
+<td>kubectl</td>
+<td>v1.14.3</td>
+</tr>
+<tr>
+<td>kube-proxy</td>
+<td>v1.14.3</td>
+</tr>
+<tr>
+<td>flannel</td>
+<td>v0.11.0</td>
+</tr>
+<tr>
+<td>etcd</td>
+<td>3.3.10</td>
+</tr>
+<tr>
+<td>docker</td>
+<td>18.09.5</td>
+</tr>
+<tr>
+<td>kubernetes-dashboard</td>
+<td>v1.10.1</td>
+</tr>
+<tr>
+<td>keepalived</td>
+<td>1.3.5</td>
+</tr>
+<tr>
+<td>haproxy</td>
+<td>1.5.18</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>高可用架构说明</p>
+<p><img src="https://user-images.githubusercontent.com/15189954/33195427-4cd2deb2-d112-11e7-8a8f-5a0fc047417e.png" alt="Image result for kubeadm-ha"></p>
+<p><strong>kubernetes架构概念</strong></p>
+<p>kube-apiserver：集群核心，集群API接口、集群各个组件通信的中枢；集群安全控制；<br>
+etcd：集群的数据中心，用于存放集群的配置以及状态信息，通过RAFT同步信息。<br>
+kube-scheduler：集群Pod的调度中心；默认kubeadm安装情况下–leader-elect参数已经设置为true，保证master集群中只有一个kube-scheduler处于活跃状态；<br>
+kube-controller-manager：集群状态管理器，当集群状态与期望不同时，kcm会努力让集群恢复期望状态，比如：当一个pod死掉，kcm会努力新建一个pod来恢复对应replicas set期望的状态；默认kubeadm安装情况下–leader-elect参数已经设置为true，保证master集群中只有一个kube-controller-manager处于活跃状态；<br>
+kubelet: kubernetes node上的 agent，负责与node上的docker engine打交道；<br>
+kube-proxy: 每个node上一个，负责service vip到endpoint pod的流量转发，原理是通过设置iptables规则实现</p>
+<p><strong>负载均衡说明</strong></p>
+<p>haproxy： 主要用于apiserver负载均衡<br>
+keepalived： 主要用于apiserver高可用。<br>
+<code>haproxy+keepalived</code>主要功能就是实现高可用状态的负载均衡。首先通过keepalived生成一个虚地址VIP（主机点宕机后漂移到其他机器，VIP在哪台机器上，就和本地ip地址一样，都代表本机，共用同网卡，共用本地服务service，本地接口socket），然后当访问VIP:PORT再通过haproxy负载至后端的实际端口RIP:6443，即真正的apiserver服务.</p>
+</li>
+<li>
+<p>准备工作</p>
+<p>1、安装docker</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[参考](https://blog.51cto.com/9406836/2314122)</span><br></pre></td></tr></table></figure>
+<p>2、修改内核参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cat &lt;&lt;EOF &gt;  /etc/sysctl.d/k8s.conf</span><br><span class="line">net.bridge.bridge-nf-call-ip6tables = 1</span><br><span class="line">net.bridge.bridge-nf-call-iptables = 1</span><br><span class="line">net.ipv4.ip_forward=1</span><br><span class="line">EOF</span><br><span class="line">sysctl --system</span><br></pre></td></tr></table></figure>
+<p>3、关闭Swap</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sed -i &apos;s/SELINUX=permissive/SELINUX=disabled/&apos; /etc/sysconfig/selinux</span><br><span class="line">setenforce 0</span><br></pre></td></tr></table></figure>
+<p>4、开启ipvs</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">需要开启的模块是</span><br><span class="line">ip_vs</span><br><span class="line">ip_vs_rr</span><br><span class="line">ip_vs_wrr</span><br><span class="line">ip_vs_sh</span><br><span class="line">nf_conntrack_ipv4</span><br><span class="line"></span><br><span class="line">检查有没有开启</span><br><span class="line">cut -f1 -d &quot; &quot;  /proc/modules | grep -e ip_vs -e nf_conntrack_ipv4</span><br><span class="line"></span><br><span class="line">没有的话，使用以下命令加载</span><br><span class="line">modprobe -- ip_vs</span><br><span class="line">modprobe -- ip_vs_rr</span><br><span class="line">modprobe -- ip_vs_wrr</span><br><span class="line">modprobe -- ip_vs_sh</span><br><span class="line">modprobe -- nf_conntrack_ipv4</span><br></pre></td></tr></table></figure>
+<p>5、禁用selinux，关闭防火墙</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">关闭selinux</span><br><span class="line">setenforce 0</span><br><span class="line">sed -i &apos;s/SELINUX=permissive/SELINUX=disabled/&apos; /etc/sysconfig/selinux</span><br><span class="line">关闭防火墙</span><br><span class="line">systemctl stop firewall.service</span><br><span class="line">systemctl disable firewall.service</span><br></pre></td></tr></table></figure>
+<p>6、开启免密，检查网络，dns，hosts，ntp是否正常</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">开启免密</span><br><span class="line">[master1]ssh-kengen </span><br><span class="line">[master1]ssh-copy-id root@hosts</span><br><span class="line">编辑hosts</span><br><span class="line">vim /etc/hosts</span><br><span class="line">开启ntp同步</span><br><span class="line">systemctl start ntpd.service</span><br><span class="line">systemctl enable ntpd.service</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<h5 id="安装步骤">安装步骤</h5>
+<p>一、安装haproxy和keepalived来创建一个负载均衡器。</p>
+<p>1、安装haproxy</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">分发安装haproxy（所有master节点）</span><br><span class="line">for i in master1 master2 master3; do ssh  root@$i  &quot;yum install haproxy &quot;;done</span><br><span class="line">配置haproxy文件（所有master节点）</span><br><span class="line">cat &lt;EOF &gt; /etc/haproxy/haproxy.cfg</span><br><span class="line">global</span><br><span class="line">    log         127.0.0.1 local2</span><br><span class="line">    chroot      /var/lib/haproxy</span><br><span class="line">    pidfile     /var/run/haproxy.pid</span><br><span class="line">    maxconn     4000</span><br><span class="line">    user        haproxy</span><br><span class="line">    group       haproxy</span><br><span class="line">    daemon</span><br><span class="line"></span><br><span class="line">defaults</span><br><span class="line">    mode                    tcp</span><br><span class="line">    log                     global</span><br><span class="line">    retries                 3</span><br><span class="line">    timeout connect         10s</span><br><span class="line">    timeout client          1m</span><br><span class="line">    timeout server          1m</span><br><span class="line"></span><br><span class="line">frontend kubernetes</span><br><span class="line">    bind *:8443              #配置端口为8443</span><br><span class="line">    mode tcp</span><br><span class="line">    default_backend kubernetes-master</span><br><span class="line"></span><br><span class="line">backend kubernetes-master           #后端服务器，也就是说访问192.168.255.140:8443会将请求转发到后端的三台，这样就实现了负载均衡</span><br><span class="line">    balance roundrobin</span><br><span class="line">    server master1  192.168.14.138:6443 check maxconn 2000</span><br><span class="line">    server master2  192.168.14.139:6443 check maxconn 2000</span><br><span class="line">    server master3  192.168.14.140:6443 check maxconn 2000</span><br><span class="line">EOF</span><br><span class="line">分发配置文件</span><br><span class="line">for i in master1 master2 master3; do scp  /etc/haproxy/haproxy.cfg   root@$i:/etc/haproxy/haproxy.cfg;done</span><br><span class="line">重启服务器</span><br><span class="line">systemctl daemon-reload &amp;&amp; systemctl restart haproxy &amp;&amp; systemctl haproxy</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2、安装keepalived</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">分发安装haproxy（所有master节点）</span><br><span class="line">for i in master1 master2 master3; do ssh  root@$i  &quot;yum install keepalived &quot;;done</span><br><span class="line">配置keepalived文件（所有master节点）</span><br><span class="line"></span><br><span class="line">cat &lt;EOF &gt; /etc/keepalived/keepalived.conf</span><br><span class="line">global_defs &#123;</span><br><span class="line">   notification_email &#123;</span><br><span class="line">     acassen@firewall.loc</span><br><span class="line">     failover@firewall.loc</span><br><span class="line">     sysadmin@firewall.loc</span><br><span class="line">   &#125;</span><br><span class="line">   notification_email_from Alexandre.Cassen@firewall.loc #表示发送通知邮件时邮件源地址是谁</span><br><span class="line">   smtp_server 192.168.200.1 #表示发送email时使用的smtp服务器地址</span><br><span class="line">   smtp_connect_timeout 30 #连接smtp连接超时时间</span><br><span class="line">   router_id LVS_docker1  #主机标识,每台机器上修改</span><br><span class="line">   vrrp_skip_check_adv_addr</span><br><span class="line">   vrrp_strict</span><br><span class="line">   vrrp_garp_interval 0</span><br><span class="line">   vrrp_gna_interval 0</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">vrrp_instance VI_1 &#123;</span><br><span class="line">    state MASTER         #备服务器上改为BACKUP</span><br><span class="line">    interface ens160       #改为自己的接口</span><br><span class="line">    virtual_router_id 51   # VRID 不可更改</span><br><span class="line">    priority 100         #备服务器上改为小于100的数字，90,80</span><br><span class="line">    advert_int 1</span><br><span class="line">    authentication &#123;</span><br><span class="line">        auth_type PASS</span><br><span class="line">        auth_pass 1111</span><br><span class="line">    &#125;</span><br><span class="line">    virtual_ipaddress &#123;</span><br><span class="line">        192.168.14.142          #虚拟vip，自己设定</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line">keepalived配置不太一样，要求修改后分发。</span><br><span class="line">重启服务器</span><br><span class="line">systemctl daemon-reload &amp;&amp; systemctl restart keepalived &amp;&amp; systemctl keepalived</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">3、验证keepalived是否正常工作。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">登录主节点</span><br><span class="line">ip a</span><br></pre></td></tr></table></figure>
+<p>二、安装 kubeadm, kubelet 和 kubectl</p>
+<p>1、添加国内yum源</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">cat &lt;&lt;EOF &gt; /etc/yum.repos.d/kubernetes.repo</span><br><span class="line">[kubernetes]</span><br><span class="line">name=Kubernetes</span><br><span class="line">baseurl=http://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64</span><br><span class="line">enabled=1</span><br><span class="line">gpgcheck=0</span><br><span class="line">repo_gpgcheck=0</span><br><span class="line">gpgkey=http://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg http://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+<p>2、指定版本安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">更新仓库</span><br><span class="line">yum makecache fast</span><br><span class="line">查找相应版本软件</span><br><span class="line">yum search --showduplicates kubeadm</span><br></pre></td></tr></table></figure>
+<p>3、在所有安装kubelet的节点上，将kubelet设置为开机启动</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install  -y kubectl-1.14.3  kubeadm-1.14.3 kubelet-1.14.3</span><br><span class="line">systemctl daemon-reload &amp;&amp; systemctl restart kubelet &amp;&amp; systemctl kubelet</span><br></pre></td></tr></table></figure>
+<p>四、提前下载所有需要用到的镜像（谷歌镜像，通过代理下载）</p>
+<p>1、查看需要下载的镜像</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubeadm config images list</span><br></pre></td></tr></table></figure>
+<p>2、通过代理转换镜像(命令行直接输入)（所有节点）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">  for i  in kube-apiserver:v1.14.3 kube-controller-manager:v1.14.3  kube-scheduler:v1.14.3 kube-proxy:v1.14.3 pause:3.1 etcd:3.3.10 coredns:1.3.1 ;do docker pull gcr.akscn.io/google_containers/$i ;docker tag gcr.akscn.io/google_containers/$i  k8s.gcr.io/$i; done</span><br><span class="line"> </span><br><span class="line">国内镜像参考</span><br><span class="line">https://kubernetes.feisky.xyz/fu-lu/mirrors</span><br></pre></td></tr></table></figure>
+<p>五、初始化master</p>
+<p>1、初始化master，所有master算作控制平面节点</p>
+<p>1） 在master1编写集群的的初始化配置文件</p>
+<pre><code>集群版本是v1.14.3
+</code></pre>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">    指定集群的api端口和地址</span><br><span class="line"></span><br><span class="line">    使用flannel，指定pod端口范围&quot;10.244.0.0/16&quot;</span><br><span class="line"></span><br><span class="line">模板文件生成参考：</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubeadm config print init-defaults --component-configs KubeletConfiguration</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">说明：</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">apiServer:</span><br><span class="line">  timeoutForControlPlane: 4m0s #超时时间</span><br><span class="line">apiVersion: kubeadm.k8s.io/v1beta1 #版本信息</span><br><span class="line">certificatesDir: /etc/kubernetes/pki #证书位置</span><br><span class="line">clusterName: kubernetes #集群名称</span><br><span class="line">controlPlaneEndpoint: &quot;&quot;  #控制平面LOAD_BALANCER_DNS:LOAD_BALANCER_PORT</span><br><span class="line">controllerManager: &#123;&#125;</span><br><span class="line">dns:</span><br><span class="line">  type: CoreDNS  #dns类型</span><br><span class="line">etcd:</span><br><span class="line">  local:</span><br><span class="line">    dataDir: /var/lib/etcd  #etcd位置</span><br><span class="line">imageRepository: k8s.gcr.io #镜像仓库</span><br><span class="line">kind: ClusterConfiguration  #类型是集群配置</span><br><span class="line">kubernetesVersion: v1.14.0  # kubernetes版本</span><br><span class="line">networking:</span><br><span class="line">  dnsDomain: cluster.local #dns</span><br><span class="line">  podSubnet: &quot;&quot;  #子网类型，和插件有关</span><br><span class="line">  serviceSubnet: 10.96.0.0/12  #service地址设定</span><br><span class="line">scheduler: &#123;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">最终配置文件</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cat &lt;EOF &gt;  kubeadm-config.yaml</span><br><span class="line">apiVersion: kubeadm.k8s.io/v1beta1</span><br><span class="line">kind: ClusterConfiguration</span><br><span class="line">kubernetesVersion: v1.14.3</span><br><span class="line">controlPlaneEndpoint: &quot;192.168.14.142:8443&quot;</span><br><span class="line">networking:</span><br><span class="line">  podSubnet: &quot;10.244.0.0/16&quot;</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+<p>2） 执行初始化</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">kubeadm init  --config=kubeadm-config.yaml --experimental-upload-certs</span><br><span class="line">#--pod-network-cidr=10.244.0.0/16 设置flannel子网地址访问</span><br><span class="line"># --experimental-upload-certs标志用于将应在所有控制平面实例之间共享的证书上载到群集，主控制平面的证书被加密并在上传的kubeadm-certs sercert</span><br></pre></td></tr></table></figure>
+<p>3） 初始化完成后的主要提示如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">其他的master节点加入控制平面的命令</span><br><span class="line">kubeadm join 192.168.14.142:8443 --token g9up4e.wr2zvn1y0ld2u9c8     --discovery-token-ca-cert-hash sha256:d065d5c2bfce0f5e0f784ed18cb0989dd19542721969c12888f04496b03f121c     --experimental-control-plane --certificate-key ddad01f830084f0dd4a9f89e914020cf1001aa31f4550cf5fccce9bad2d6d599</span><br><span class="line">node节点加入node的命令</span><br><span class="line">kubeadm join 192.168.14.131:6443 --token xl9aa5.2lxz30aupuf9lbhh     --discovery-token-ca-cert-hash sha256:0fa135166d86ad9e654f7b92074b34a42a5a25152c05e9253df62af8541c7bad</span><br><span class="line">配置kubeconfig的命令提示</span><br><span class="line">mkdir -p $HOME/.kube</span><br><span class="line">sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config</span><br><span class="line">sudo chown $(id -u):$(id -g) $HOME/.kube/config</span><br></pre></td></tr></table></figure>
+<p>4）配置kubectl，主要是配置访问apiserver 的权限</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">   mkdir -p $HOME/.kube</span><br><span class="line">sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config</span><br><span class="line">sudo chown $(id -u):$(id -g) $HOME/.kube/config</span><br></pre></td></tr></table></figure>
+<p>5）kubectl命令补选</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;source &lt;(kubectl completion bash)&quot;  &gt;&gt;  ~/.bashrc</span><br><span class="line">source ~/.bashrc</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2、初始化控制平面其他master 主机</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">其他的master节点加入控制平面的命令</span><br><span class="line">kubeadm join 192.168.14.142:8443 --token g9up4e.wr2zvn1y0ld2u9c8     --discovery-token-ca-cert-hash sha256:d065d5c2bfce0f5e0f784ed18cb0989dd19542721969c12888f04496b03f121c     --experimental-control-plane --certificate-key</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">3、集群证书和hash值，2个小小时后过期。重新生成证书方法如下</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">控制平面生成证书的解密密钥</span><br><span class="line">sudo kubeadm init phase upload-certs --experimental-upload-certs</span><br><span class="line">集群重新生成token</span><br><span class="line">kubeadm token create</span><br><span class="line">集群重新生成hash值</span><br><span class="line">openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outform der 2&gt;/dev/null | openssl dgst -sha256 -hex | sed &apos;s/^.* //&apos;</span><br><span class="line">控制平面重新加入集群的方法</span><br><span class="line">kubeadm join --token &lt;token&gt; &lt;master-ip&gt;:&lt;master-port&gt; --discovery-token-ca-cert-hash sha256:&lt;hash&gt; --experimental-control-plane --certificate-key cert</span><br><span class="line">work节点重新加入集群的方法</span><br><span class="line">kubeadm join --token &lt;token&gt; &lt;master-ip&gt;:&lt;master-port&gt; --discovery-token-ca-cert-hash sha256:&lt;hash&gt;</span><br></pre></td></tr></table></figure>
+<p>4、检查三台master是否初始化成功</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get nodes</span><br></pre></td></tr></table></figure>
+<h5 id="6-将worker节点加入集群">6、 将worker节点加入集群</h5>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubeadm join 192.168.14.131:6443 --token xl9aa5.2lxz30aupuf9lbhh     --discovery-token-ca-cert-hash sha256:0fa135166d86ad9e654f7b92074b34a42a5a25152c05e9253df62af8541c7bad</span><br></pre></td></tr></table></figure>
+<h5 id="7-安装网络插件flannel主节点运行即可">7、安装网络插件Flannel(主节点运行即可)</h5>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/62e44c867a2846fefb68bd5f178daf4da3095ccb/Documentation/kube-flannel.yml</span><br></pre></td></tr></table></figure>
+<h5 id="8-查看集群状态">8、查看集群状态</h5>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> master1   Ready      master   4h41m   v1.14.3</span><br><span class="line">master2   Ready      &lt;none&gt;   4h36m   v1.14.3</span><br><span class="line">master3   Ready      master   4h50m   v1.14.3</span><br><span class="line">worker1   Ready      master   4h39m   v1.14.3</span><br></pre></td></tr></table></figure>
+<p>参考链接：</p>
+<p><a href="https://blog.csdn.net/fanren224/article/details/86573264" target="_blank" rel="noopener">kubeadm高可用安装kubernetes v1.14.3</a></p>
+<p><a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/" target="_blank" rel="noopener">通过kubeadm创建单个集群</a></p>
+<p><a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/high-availability/" target="_blank" rel="noopener">通过kubeadm创建高可用集群</a></p>
+<p><a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/kubelet-integration/" target="_blank" rel="noopener">通过kubeadm配置集群中的每个kubelet</a></p>
+<p>后续继续补充，mark！</p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/hello-hexo/" data-toggle="tooltip" data-placement="top" title="Hello,Hexo!">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/Prometheus系统下vmware-exporter配置/" data-toggle="tooltip" data-placement="top" title="Prometheus系统下vmware_exporter配置">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    <style>
+      span.toc-nav-number{
+        display: none
+      }
+    </style>
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#kubernetes-v1143-ha集群安装"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">kubernetes v1.14.3 HA&#x96C6;&#x7FA4;&#x5B89;&#x88C5;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#目录结构"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">&#x76EE;&#x5F55;&#x7ED3;&#x6784;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#集群规划"><span class="toc-nav-number">1.1.0.1.</span> <span class="toc-nav-text">&#x96C6;&#x7FA4;&#x89C4;&#x5212;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#组件版本"><span class="toc-nav-number">1.1.0.2.</span> <span class="toc-nav-text">&#x7EC4;&#x4EF6;&#x7248;&#x672C;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#安装步骤"><span class="toc-nav-number">1.1.0.3.</span> <span class="toc-nav-text">&#x5B89;&#x88C5;&#x6B65;&#x9AA4;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#6-将worker节点加入集群"><span class="toc-nav-number">1.1.0.4.</span> <span class="toc-nav-text">6&#x3001; &#x5C06;worker&#x8282;&#x70B9;&#x52A0;&#x5165;&#x96C6;&#x7FA4;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#7-安装网络插件flannel主节点运行即可"><span class="toc-nav-number">1.1.0.5.</span> <span class="toc-nav-text">7&#x3001;&#x5B89;&#x88C5;&#x7F51;&#x7EDC;&#x63D2;&#x4EF6;Flannel(&#x4E3B;&#x8282;&#x70B9;&#x8FD0;&#x884C;&#x5373;&#x53EF;)</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#8-查看集群状态"><span class="toc-nav-number">1.1.0.6.</span> <span class="toc-nav-text">8&#x3001;&#x67E5;&#x770B;&#x96C6;&#x7FA4;&#x72B6;&#x6001;</span></a></li></ol></li></ol></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#etcd" title="etcd">etcd</a>
+                        
+                          <a class="tag" href="/tags/#ha" title="ha">ha</a>
+                        
+                          <a class="tag" href="/tags/#kubernetes" title="kubernetes">kubernetes</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="https://blog.51cto.com/9406836" target="_blank">51cto  moakia</a></li>
+                    
+                        <li><a href="https://blog.51cto.com/9406836" target="_blank">51cto  moakia</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/vavikast">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; vavikast 2019 
+                    <br>
+                    Theme by <a href="http://beantech.org">BeanTech</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    re-Ported by <a href="http://www.vavikast.com">王伟</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=huweihuang&repo=hexo-theme-huweihuang&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://www.vavikast.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://www.vavikast.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
