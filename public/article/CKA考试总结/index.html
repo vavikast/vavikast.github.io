@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          CKA考试总结 - vavikast | Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://www.vavikast.com/article/CKA考试总结/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#kubernetes" title="kubernetes">kubernetes</a>
+                            
+                              <a class="tag" href="/tags/#cka" title="cka">cka</a>
+                            
+                        </div>
+                        <h1>CKA考试总结</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by vavikast on
+                            2019-07-10
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">vavikast</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h4 id="cka考试总结">CKA考试总结</h4>
+<p>​        很高兴自己考过了CKA，准备了很长一段时间，总算有所回报。</p>
+<p>​        这次考试，花费了300$，预约的线上考试。最近看着华为云正在推广线下考试，只要一千多人民币，真是莫名心痛。先晒下证书缓解下。</p>
+<p><img src="https://cdn.sinaimg.cn.52ecy.cn/large/005BYqpgly1g4tp5hllhlj30t20mek4b.jpg" alt="CKA"></p>
+<h5 id="经验说明">经验说明</h5>
+<p>很多人已经分享过自己的经验，多的我就不说了，我只说我认为有用的。</p>
+<ol>
+<li>
+<p>考试要求</p>
+<ol>
+<li>考试环境：要求安静无人，桌面干净。</li>
+<li>考试方式： 只使用chrome浏览器，不会使用到其他软件。通过浏览器调用摄像头，麦克风，桌面分享等功能。具体操作方式类似于<a href="https://www.katacoda.com/courses/kubernetes/playground" target="_blank" rel="noopener">katacoda</a>。各位要趁机练练手啊。</li>
+<li>考官交流： 不知道对面是男是女，与对方聊天全程打字，对方全程监控，并下达各种指令。对方会要求我们分享摄像头，分享桌面，没事不要乱动。全英文交流，所以只要英文阅读能力不错就行，其他时间可以全程 输入ok！</li>
+</ol>
+</li>
+<li>
+<p>网络要求</p>
+<ol>
+<li>
+<p>要翻墙。要求稳定，我使用的是google一年期的免费试用，自己搭建的梯子。速度很稳定，但是还是断了一次，幸亏考试是实时保存的，继续做题就行。</p>
+<p>可以申请阿里云-香港云主机；或者试用google云主机。下面的方式都搭梯子的方式是基于docker，简单快捷。</p>
+<p><a href="https://github.com/vavikast/docker-shadowsocks" target="_blank" rel="noopener">shadowsocks：</a></p>
+<p><a href="https://github.com/kylemanna/docker-openvpn" target="_blank" rel="noopener">openvpn：</a></p>
+</li>
+<li>
+<p>最好安排早上： 这个是好多人提到的，好像是因为其他时间，国际网络出口较为拥挤。我是预约的6点，一切流程。</p>
+</li>
+</ol>
+</li>
+<li>
+<p>技巧分享</p>
+<ol>
+<li>多看书多练习</li>
+</ol>
+<p><a href="https://bbs.huaweicloud.com/forum/thread-11064-1-1.html" target="_blank" rel="noopener">华为云CKA实战</a></p>
+<p><a href="https://www.bilibili.com/video/av44264629?from=search&amp;seid=16743035774806411630" target="_blank" rel="noopener">马哥kubernetes</a></p>
+<p><a href="https://kubernetes.io/" target="_blank" rel="noopener">kubernetes官网</a></p>
+<p><a href="https://legacy.gitbook.com/book/feisky/kubernetes/details" target="_blank" rel="noopener">kubernetes指南</a></p>
+<pre><code>  可以先看马哥的教程先了解kubernetes是什么，然后看feisky的kubernetes指南，了解k8s概念和操作，然后看k8s官网进行英文概念理解记忆，最后看华为云cka，准备考试。最重要的就是看kubernetes官网，所有的考点基本都在上面，而且是考试唯一可以看的网页。
+</code></pre>
+<ol start="2">
+<li>
+<p>加快考试速度。</p>
+<p>2.1使用命令补全：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source &lt;(kubectl completion bash)</span><br></pre></td></tr></table></figure>
+<p>2.2使用别名；</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">alias kc=&apos;kubectl&apos;</span><br><span class="line">alias kgp=&apos;kubectl get pods&apos;</span><br><span class="line">alias kgs=&apos;kubectl get svc&apos;</span><br></pre></td></tr></table></figure>
+<p>2.3能用命令行，就不要自己写yaml文件；</p>
+<p>2.4 能够从kubernetes.io中复制粘贴的，就不要自己敲命令；复制粘贴我用的是鼠标的粘贴复制，没有使用shift+insert,ctrl+insert，不支持ctrl+c,ctrl+v。</p>
+</li>
+<li>
+<p>注意审题，认真做题</p>
+<p>3.1中英文切换审题，特别是有歧义的时候。</p>
+<p>3.2 注意切换运行环境，kubectl config set-config。</p>
+</li>
+<li>
+<p>命令行和yaml问题</p>
+<p>考试中有关kubernetes本身的题目，除了pv和pvc，其他情况下基本都可以使用kubectl命令行去转换成yaml文件，没有命令行的可以直接粘贴复制kubernetes.io文件，请各位多加练习。可以将kubectl 命令行撸个好几遍。</p>
+</li>
+</ol>
+<p>​              不建议这个使用使用kubectl explain ,可以使用kubectl command -h更快。</p>
+<p>常用举例</p>
+<p>生成pod</p>
+   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl run pod --image=nginx --restart=Never --requests=</span><br></pre></td></tr></table></figure>
+<p>生成job</p>
+   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl run job --image=nginx --restart=OnFailure</span><br></pre></td></tr></table></figure>
+<p>生成deploy</p>
+   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl run deploy --image=nginx  --replicas=2</span><br></pre></td></tr></table></figure>
+<p>生成svc</p>
+   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl expose deployment sd2 --type=ClusterIP --target-port=80 --name=sd2</span><br></pre></td></tr></table></figure>
+<p>生成名称空间</p>
+   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create ns ns</span><br></pre></td></tr></table></figure>
+<p>生成configmap</p>
+   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create configmap  db2   --from-literal=nt=nt</span><br></pre></td></tr></table></figure>
+<ol start="5">
+<li>
+<p>考试策略</p>
+<p>遇到难题不会就先过了，在考试提供的notepad上记下来，再来回头看。</p>
+</li>
+</ol>
+</li>
+</ol>
+<h5 id="真题分享">真题分享</h5>
+<p>我把我能够记住的题目分享出来。具体答案就不分享了，不想引导错误，提供一点思路和相关链接，仅供参考。每个人的考题内容可能不一样，要多看啊。</p>
+<p>1.列出指定pod的日志中状态为Error的行，并记录在指定的文件上。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl logs &lt;podname&gt; | grep bash &gt; xxx.txt</span><br><span class="line">https://kubernetes.io/docs/tasks/debug-application-cluster/debug-pod-replication-controller/</span><br></pre></td></tr></table></figure>
+<p>2.列出环境内所有的pv 并以 capacity字段排序</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">（使用kubectl自带排序功能，field字段关注下）</span><br><span class="line">kubectl get pv --sort-by=.spec.capacity.storage</span><br><span class="line">https://kubernetes.io/docs/concepts/overview/working-with-objects/field-selectors/</span><br></pre></td></tr></table></figure>
+<p>3.列出k8s可用的节点，不包含不可调度的 和 NoReachable的节点，并把数字写入到文件里。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl get nodes; kubectl get nodes xxx -oyaml</span><br><span class="line">https://kubernetes.io/docs/concepts/architecture/nodes/</span><br></pre></td></tr></table></figure>
+<p>4.创建一个pod名称为nginx，并将其调度到节点为 disk=stat上</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nodeselector 字段</span><br><span class="line">https://kubernetes.io/docs/concepts/configuration/assign-pod-node/</span><br></pre></td></tr></table></figure>
+<p>5.提供一个pod的yaml，要求添加Init Container，Init Container的作用是创建一个空文件，pod的Containers判断文件是否存在，不存在则退出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">init container</span><br><span class="line">https://kubernetes.io/docs/concepts/workloads/pods/init-containers/</span><br></pre></td></tr></table></figure>
+<p>6.指定在命名空间内创建一个pod名称为test，内含四个指定的镜像nginx、redis、memcached、busybox.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://kubernetes.io/docs/tasks/configure-pod-container/assign-memory-resource/</span><br></pre></td></tr></table></figure>
+<p>7.创建一个命名空间</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl create ns xx</span><br><span class="line">https://kubernetes.io/docs/tasks/configure-pod-container/assign-memory-resource/</span><br></pre></td></tr></table></figure>
+<p>8.在一个新的命名空间创建pod</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://kubernetes.io/docs/tasks/configure-pod-container/assign-memory-resource/</span><br></pre></td></tr></table></figure>
+<p>9.列出Service名为test下的pod 并找出使用CPU使用率最高的一个，将pod名称写入文件中.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">kubectl get svc test -oyaml; 查看配置内容，特别找出标签</span><br><span class="line">kubectl top nodes --selector=&quot;xxx=yy&quot;</span><br><span class="line">https://kubernetes.io/docs/tasks/debug-application-cluster/debug-service/</span><br></pre></td></tr></table></figure>
+<p>10.创建一个Pod名称为nginx-app，镜像为nginx，并根据pod创建名为nginx-app的Service，type为NodePort</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl expose xx</span><br><span class="line">https://kubernetes.io/docs/tasks/access-application-cluster/service-access-application-cluster/</span><br></pre></td></tr></table></figure>
+<p>11.创建一个nginx的daemonset，保证其在每个节点上运行，注意不要覆盖节点原有的Tolerations</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/</span><br></pre></td></tr></table></figure>
+<p>12.将deployment为nginx-app的副本数从1变成4</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl scale deployment xx --replicas=4</span><br><span class="line">https://kubernetes.io/docs/tasks/run-application/scale-stateful-set/</span><br></pre></td></tr></table></figure>
+<p>13.创建nginx-app的deployment ，使用镜像为nginx:1.11.0-alpine ,修改镜像为1.11.3-alpine，并记录升级，再使用回滚，将镜像回滚至nginx:1.11.0-alpine</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl rollout xx</span><br><span class="line">https://kubernetes.io/docs/tasks/run-application/rolling-update-replication-controller/</span><br></pre></td></tr></table></figure>
+<p>14.根据已有的一个nginx的pod、创建名为nginx的svc、并使用nslookup查找出service dns记录，pod的dns记录并分别写入到指定的文件中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">busybox:1.28</span><br><span class="line">https://kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/</span><br></pre></td></tr></table></figure>
+<p>15.创建Secret 名为mysecret，内含有password字段，值为bob，然后 在pod1里 使用ENV进行调用，Pod2里使用Volume挂载在/data 下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">https://kubernetes.io/docs/tasks/inject-data-application/define-environment-variable-container/</span><br><span class="line">https://kubernetes.io/docs/concepts/storage/volumes/</span><br></pre></td></tr></table></figure>
+<p>16.使node1节点不可调度，并重新分配该节点上的pod</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">kubectl drain nodex</span><br><span class="line">kubectl uncordon nodex</span><br><span class="line">https://kubernetes.io/docs/concepts/architecture/nodes/</span><br></pre></td></tr></table></figure>
+<p>17.使用etcd 备份功能备份etcd（提供enpoints，ca、cert、key）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">https://kubernetes.io/docs/tasks/administer-cluster/configure-upgrade-etcd/</span><br><span class="line">https://blog.51cto.com/9406836/2409012</span><br><span class="line">https://github.com/mmumshad/certified-kubernetes-administrator-course-answers/blob/master/etcd-backup-and-restore.md</span><br></pre></td></tr></table></figure>
+<p>18.给出一个失联节点的集群，排查节点故障，要保证改动是永久的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">kubectl get nodes 故障节点 -oyaml 查看故障</span><br><span class="line">远程到故障节点启动kubelet服务</span><br><span class="line">https://kubernetes.io/docs/tasks/debug-application-cluster/debug-cluster/</span><br></pre></td></tr></table></figure>
+<p>19.给出一个集群，排查出集群的故障。集群无法使用kubectl。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">集群无法使用kubectl，先到主节点，查看kubelet配置，static-pod配置文件出错，更改重新</span><br><span class="line">https://kubernetes.io/docs/tasks/debug-application-cluster/debug-cluster/</span><br></pre></td></tr></table></figure>
+<p>20.创建static pods.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://kubernetes.io/docs/tasks/administer-cluster/static-pod/</span><br></pre></td></tr></table></figure>
+<p>21.给出一个集群，将节点node1添加到集群中，并使用TLS bootstrapping</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">https://github.com/mmumshad/certified-kubernetes-administrator-course-answers/blob/master/tls-bootstrap-worker-node-2</span><br><span class="line">https://github.com/opsnull/follow-me-install-kubernetes-cluster/blob/master/07-2.kubelet.md</span><br></pre></td></tr></table></figure>
+<p>22.创建一个pv，类型是hostPath，位于/data中，大小1G，模式ReadOnlyMany</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://kubernetes.io/docs/concepts/storage/persistent-volumes/</span><br></pre></td></tr></table></figure>
+<p>23.创建一个pod，使用hostpath。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h5 id="经验贴推荐">经验贴推荐</h5>
+<p>下面这些都是我我认为写的很好，考试一定会用到的资料，如果大家考CKA，请一定要看。</p>
+<p><a href="https://docs.google.com/spreadsheets/d/10NltoF_6y3mBwUzQ4bcQLQfCE1BWSgUDcJXy-Qp2JEU/edit#gid=0" target="_blank" rel="noopener">CKA学习资源汇总，只要找到CKA部分就行</a></p>
+<p><a href="https://github.com/mmumshad/certified-kubernetes-administrator-course-answers" target="_blank" rel="noopener">ETCD备份+node节点认证</a></p>
+<p><a href="https://github.com/David-VTUK/CKA-StudyGuide" target="_blank" rel="noopener">CKA-Studyguide</a></p>
+<p><a href="http://ljchen.net/2018/11/07/CKA%E8%80%83%E8%AF%95%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" target="_blank" rel="noopener">CKA考试知识总结</a></p>
+<p><a href="http://ljchen.net/2018/11/07/CKA%E8%80%83%E8%AF%95%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/" target="_blank" rel="noopener">CKA考试经验总结</a></p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/article/新博客更新指南/" data-toggle="tooltip" data-placement="top" title="新博客更新指南">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    <style>
+      span.toc-nav-number{
+        display: none
+      }
+    </style>
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#cka考试总结"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">CKA&#x8003;&#x8BD5;&#x603B;&#x7ED3;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#经验说明"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">&#x7ECF;&#x9A8C;&#x8BF4;&#x660E;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#真题分享"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">&#x771F;&#x9898;&#x5206;&#x4EAB;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#经验贴推荐"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">&#x7ECF;&#x9A8C;&#x8D34;&#x63A8;&#x8350;</span></a></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#kubernetes" title="kubernetes">kubernetes</a>
+                        
+                          <a class="tag" href="/tags/#cka" title="cka">cka</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="https://blog.51cto.com/9406836" target="_blank">51cto  moakia</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/vavikast">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; vavikast 2019 
+                    <br>
+                    Theme by <a href="http://beantech.org">BeanTech</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    re-Ported by <a href="http://www.huweihuang.com">胡伟煌</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=huweihuang&repo=hexo-theme-huweihuang&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://www.vavikast.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://www.vavikast.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

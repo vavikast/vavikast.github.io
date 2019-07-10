@@ -16,13 +16,6 @@
     </url>
 
     <url>
-        <loc>http://www.vavikast.com/tags/kubernetes/</loc>
-        <lastmod>2019-07-09T07:58:51.289Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>http://www.vavikast.com/tags/etcd/</loc>
         <lastmod>2019-07-09T07:58:51.289Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -67,6 +60,20 @@
     <url>
         <loc>http://www.vavikast.com/tags/life/</loc>
         <lastmod>2019-07-09T08:33:18.498Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://www.vavikast.com/tags/kubernetes/</loc>
+        <lastmod>2019-07-10T01:39:51.791Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://www.vavikast.com/tags/cka/</loc>
+        <lastmod>2019-07-10T01:39:51.791Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
