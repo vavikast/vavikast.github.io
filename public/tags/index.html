@@ -134,14 +134,14 @@
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
@@ -198,6 +198,8 @@
             <!-- 标签云 -->
             <div id='tag_cloud' class="tags">
                 
+                    <a href="#prometheus" title="prometheus" rel="2">prometheus</a>
+                
                     <a href="#cfssl" title="cfssl" rel="1">cfssl</a>
                 
                     <a href="#kubernetes" title="kubernetes" rel="4">kubernetes</a>
@@ -206,9 +208,9 @@
                 
                     <a href="#life" title="life" rel="1">life</a>
                 
-                    <a href="#etcd" title="etcd" rel="2">etcd</a>
+                    <a href="#vmware" title="vmware" rel="1">vmware</a>
                 
-                    <a href="#ha" title="ha" rel="1">ha</a>
+                    <a href="#etcd" title="etcd" rel="2">etcd</a>
                 
                     <a href="#openvpn" title="openvpn" rel="1">openvpn</a>
                 
@@ -216,14 +218,49 @@
                 
                     <a href="#easyrsa" title="easyrsa" rel="1">easyrsa</a>
                 
-                    <a href="#vmware" title="vmware" rel="1">vmware</a>
-                
-                    <a href="#prometheus" title="prometheus" rel="1">prometheus</a>
+                    <a href="#ha" title="ha" rel="1">ha</a>
                 
             </div>
 
             <!-- 标签列表 -->
 
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="prometheus">
+                    <span class="tag-text">prometheus</span>
+                </span>
+                
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
+                     <a href="/article/Alertmanger中邮箱配置/">
+                        <h2 class="post-title">
+                            Alertmanger中邮箱配置
+                        </h2>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
+                
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
+                     <a href="/article/Prometheus系统下vmware-exporter配置/">
+                        <h2 class="post-title">
+                            Prometheus系统下vmware_exporter配置
+                        </h2>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
+                
+            </div>
             
             <div class="one-tag-list">
                 <span class="fa fa-tag listing-seperator" id="cfssl">
@@ -359,6 +396,28 @@
             </div>
             
             <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="vmware">
+                    <span class="tag-text">vmware</span>
+                </span>
+                
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
+                     <a href="/article/Prometheus系统下vmware-exporter配置/">
+                        <h2 class="post-title">
+                            Prometheus系统下vmware_exporter配置
+                        </h2>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
                 <span class="fa fa-tag listing-seperator" id="etcd">
                     <span class="tag-text">etcd</span>
                 </span>
@@ -386,28 +445,6 @@
                      <a href="/article/kubernetest-master-节点恢复灾备恢复操作指南/">
                         <h2 class="post-title">
                             kubernetest master 节点恢复灾备恢复操作指南
-                        </h2>
-                        
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </div>
-                <hr>
-                
-            </div>
-            
-            <div class="one-tag-list">
-                <span class="fa fa-tag listing-seperator" id="ha">
-                    <span class="tag-text">ha</span>
-                </span>
-                
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <div class="post-preview">
-                     <a href="/article/kubernetes-v1-14-3-HA集群安装/">
-                        <h2 class="post-title">
-                            kubernetes v1.14.3 HA集群安装
                         </h2>
                         
                     </a>
@@ -484,8 +521,8 @@
             </div>
             
             <div class="one-tag-list">
-                <span class="fa fa-tag listing-seperator" id="vmware">
-                    <span class="tag-text">vmware</span>
+                <span class="fa fa-tag listing-seperator" id="ha">
+                    <span class="tag-text">ha</span>
                 </span>
                 
                   <!-- <li class="listing-item">
@@ -493,31 +530,9 @@
                   <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
                   </li> -->
                  <div class="post-preview">
-                     <a href="/article/Prometheus系统下vmware-exporter配置/">
+                     <a href="/article/kubernetes-v1-14-3-HA集群安装/">
                         <h2 class="post-title">
-                            Prometheus系统下vmware_exporter配置
-                        </h2>
-                        
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </div>
-                <hr>
-                
-            </div>
-            
-            <div class="one-tag-list">
-                <span class="fa fa-tag listing-seperator" id="prometheus">
-                    <span class="tag-text">prometheus</span>
-                </span>
-                
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <div class="post-preview">
-                     <a href="/article/Prometheus系统下vmware-exporter配置/">
-                        <h2 class="post-title">
-                            Prometheus系统下vmware_exporter配置
+                            kubernetes v1.14.3 HA集群安装
                         </h2>
                         
                     </a>

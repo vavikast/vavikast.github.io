@@ -3,10 +3,10 @@ title: Alertmanger中邮箱配置
 catalog: true
 date: 2019-07-12 15:28:24
 subtitle:
-header-img:"/img/article_header/article_header.png"
+header-img: "/img/article_header/article_header.png"
 tags:
 - prometheus
-updateDate:2019-07-12 15:28:24
+updateDate:  2019-07-12 15:28:24
 ---
 
 #####  alertmanger配置文件-邮箱配置问题。

@@ -23,13 +23,6 @@
     </url>
 
     <url>
-        <loc>http://www.vavikast.com/tags/prometheus/</loc>
-        <lastmod>2019-07-10T04:48:18.217Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>http://www.vavikast.com/tags/life/</loc>
         <lastmod>2019-07-10T04:48:18.218Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -74,6 +67,13 @@
     <url>
         <loc>http://www.vavikast.com/tags/easyrsa/</loc>
         <lastmod>2019-07-10T04:48:18.228Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://www.vavikast.com/tags/prometheus/</loc>
+        <lastmod>2019-07-12T07:41:56.529Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
