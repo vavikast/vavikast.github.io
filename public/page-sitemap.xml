@@ -7,29 +7,29 @@
     </url>
     
     <url>
+        <loc>http://www.vavikast.com/about/</loc>
+        <lastmod>2019-07-09T08:54:48.704Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <url>
         <loc>http://www.vavikast.com/tags/</loc>
-        <lastmod>2019-07-10T04:48:18.316Z</lastmod>
+        <lastmod>2019-07-09T02:52:01.320Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     
     <url>
         <loc>http://www.vavikast.com/archive/</loc>
-        <lastmod>2019-07-10T04:48:18.230Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
-    </url>
-    
-    <url>
-        <loc>http://www.vavikast.com/about/</loc>
-        <lastmod>2019-07-10T04:48:18.229Z</lastmod>
+        <lastmod>2019-07-09T02:52:01.313Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     
     <url>
         <loc>http://www.vavikast.com/404.html</loc>
-        <lastmod>2019-07-10T04:48:18.201Z</lastmod>
+        <lastmod>2019-07-09T02:52:01.300Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
