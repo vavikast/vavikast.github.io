@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          CFSSL使用方法重新整理说明 - vavikast | Blog
+          记openvpn客户端安装遇到问题 - vavikast | Blog
         
     </title>
 
-    <link rel="canonical" href="http://www.vavikast.com/article/CFSSL使用方法重新整理说明/">
+    <link rel="canonical" href="http://www.vavikast.com/article/记openvpn客户端安装遇到问题/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -88,16 +88,14 @@
                     <div class="post-heading">
                         <div class="tags">
                             
-                              <a class="tag" href="/tags/#cfssl" title="cfssl">cfssl</a>
-                            
-                              <a class="tag" href="/tags/#kubernetes" title="kubernetes">kubernetes</a>
+                              <a class="tag" href="/tags/#openvpn" title="openvpn">openvpn</a>
                             
                         </div>
-                        <h1>CFSSL使用方法重新整理说明</h1>
+                        <h1>记openvpn客户端安装遇到问题</h1>
                         <h2 class="subheading"></h2>
                         <span class="meta">
                             Posted by vavikast on
-                            2019-07-09
+                            2019-07-23
                         </span>
                     </div>
                 
@@ -214,44 +212,19 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p>CFSSL是CloudFlare的PKI / TLS瑞士军刀。它既是命令行工具，也是用于签名，验证和捆绑TLS证书的HTTP API服务器.</p>
-<ol>
-<li>
-<p>​    下载安装CFSSL</p>
-<p>用于签名，验证和捆绑TLS证书的HTTP API工具)（master节点</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">wget https://pkg.cfssl.org/R1.2/cfssl-certinfo_linux-amd64</span><br><span class="line">wget https://pkg.cfssl.org/R1.2/cfssl_linux-amd64</span><br><span class="line">wget https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64</span><br><span class="line">mv  cfssl-certinfo_linux-amd64 /usr/local/bin/cfssl-certinfo</span><br><span class="line">mv  cfssl_linux-amd64 /usr/local/bin/cfssl</span><br><span class="line">mv  https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64 /usr/local/bin/cfssljson</span><br><span class="line">chmod +x  /usr/local/bin/cfssl /usr/local/bin/cfssl-certinfo /usr/local/bin/cfssljson</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>创建CA(Certificate Authority)（master节点）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">cat &gt; ca-config.json &lt;&lt;EOF</span><br><span class="line">&#123;</span><br><span class="line">  &quot;signing&quot;: &#123;</span><br><span class="line">	&quot;default&quot;: &#123;</span><br><span class="line">	  &quot;expiry&quot;: &quot;87600h&quot;</span><br><span class="line">	&#125;,</span><br><span class="line">	&quot;profiles&quot;: &#123;</span><br><span class="line">	  &quot;kubernetes&quot;: &#123;</span><br><span class="line">		&quot;usages&quot;: [</span><br><span class="line">			&quot;signing&quot;,</span><br><span class="line">			&quot;key encipherment&quot;,</span><br><span class="line">			&quot;server auth&quot;,</span><br><span class="line">			&quot;client auth&quot;</span><br><span class="line">		],</span><br><span class="line">		&quot;expiry&quot;: &quot;87600h&quot;</span><br><span class="line">	  &#125;</span><br><span class="line">	&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">		</span><br><span class="line">知识点：</span><br><span class="line">	ca-config.json：可以定义多个 profiles，分别指定不同的过期时间、使用场景等参数；后续在签名证书时使用某个 profile；此实例只有一个kubernetes模板。</span><br><span class="line">	signing：表示该证书可用于签名其它证书；生成的 ca.pem 证书中 CA=TRUE；</span><br><span class="line">	server auth：表示client可以用该 CA 对server提供的证书进行验证；</span><br><span class="line">	client auth：表示server可以用该CA对client提供的证书进行验证；</span><br><span class="line">	注意标点符号，最后一个字段一般是没有都好的。</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>创建证书请求</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">	cat &gt; ca-csr.json &lt;&lt;EOF</span><br><span class="line">	&#123;</span><br><span class="line">	  &quot;CN&quot;: &quot;kubernetes&quot;,    </span><br><span class="line">	  &quot;key&quot;: &#123;</span><br><span class="line">		&quot;algo&quot;: &quot;rsa&quot;,</span><br><span class="line">		&quot;size&quot;: 2048</span><br><span class="line">	  &#125;,</span><br><span class="line">	  &quot;names&quot;: [</span><br><span class="line">		&#123;</span><br><span class="line">		  &quot;C&quot;: &quot;CN&quot;,</span><br><span class="line">		  &quot;ST&quot;: &quot;GuangDong&quot;,</span><br><span class="line">		  &quot;L&quot;: &quot;ShenZhen&quot;,</span><br><span class="line">		  &quot;O&quot;: &quot;k8s&quot;,</span><br><span class="line">		  &quot;OU&quot;: &quot;System&quot;</span><br><span class="line">		&#125;</span><br><span class="line">	  ],</span><br><span class="line">		&quot;ca&quot;: &#123;</span><br><span class="line">		   &quot;expiry&quot;: &quot;87600h&quot;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;	</span><br><span class="line">	EOF</span><br><span class="line"></span><br><span class="line">知识点：</span><br><span class="line">	&quot;CN&quot;：Common Name，kube-apiserver 从证书中提取该字段作为请求的用户名 (User Name)</span><br><span class="line">	&quot;O&quot;：Organization，kube-apiserver 从证书中提取该字段作为请求用户所属的组 (Group)</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>生成CA证书和私钥</p>
-</li>
-</ol>
-   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cfssl gencert -initca ca-csr.json | cfssljson -bare ca</span><br><span class="line">将会生成 ca-key.pem（私钥）  ca.pem（公钥）</span><br><span class="line">知识点： cfssljson只是整理json格式，-bare主要的意义在于命名 （个人见解，以便理解，勿喷）</span><br></pre></td></tr></table></figure>
-<ol start="5">
-<li>
-<p>创建kubernetes证书请求文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">cat &gt; kubernetes-csr.json &lt;&lt;EOF</span><br><span class="line">&#123;</span><br><span class="line">	&quot;CN&quot;: &quot;kubernetes&quot;,</span><br><span class="line">	&quot;hosts&quot;: [</span><br><span class="line">	  &quot;127.0.0.1&quot;,</span><br><span class="line">	  &quot;10.192.44.129&quot;,</span><br><span class="line">	  &quot;10.192.44.128&quot;,</span><br><span class="line">	  &quot;10.192.44.126&quot;,</span><br><span class="line">	  &quot;10.192.44.127&quot;,</span><br><span class="line">	  &quot;10.254.0.1&quot;,</span><br><span class="line">	  &quot;*.kubernetes.master&quot;,</span><br><span class="line">	  &quot;localhost&quot;,</span><br><span class="line">	  &quot;kubernetes&quot;,</span><br><span class="line">	  &quot;kubernetes.default&quot;,</span><br><span class="line">	  &quot;kubernetes.default.svc&quot;,</span><br><span class="line">	  &quot;kubernetes.default.svc.cluster&quot;,</span><br><span class="line">	  &quot;kubernetes.default.svc.cluster.local&quot;</span><br><span class="line">	],</span><br><span class="line">	&quot;key&quot;: &#123;</span><br><span class="line">		&quot;algo&quot;: &quot;rsa&quot;,</span><br><span class="line">		&quot;size&quot;: 2048</span><br><span class="line">	&#125;,</span><br><span class="line">	&quot;names&quot;: [</span><br><span class="line">		&#123;</span><br><span class="line">			&quot;C&quot;: &quot;CN&quot;,</span><br><span class="line">			&quot;ST&quot;: &quot;GuangDong&quot;,</span><br><span class="line">			&quot;L&quot;: &quot;ShenZhen&quot;,</span><br><span class="line">			&quot;O&quot;: &quot;k8s&quot;,</span><br><span class="line">			&quot;OU&quot;: &quot;System&quot;</span><br><span class="line">		&#125;</span><br><span class="line">	]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line">知识点：</span><br><span class="line">	这个证书目前专属于 apiserver加了一个 *.kubernetes.master 域名以便内部私有 DNS 解析使用(可删除)；至于很多人问过 kubernetes 这几个能不能删掉，答案是不可以的；因为当集群创建好后，default namespace 下会创建一个叫 kubenretes 的 svc，有一些组件会直接连接这个 svc 来跟 api 通讯的，证书如果不包含可能会出现无法连接的情况；其他几个 kubernetes 开头的域名作用相同</span><br><span class="line">				hosts包含的是授权范围，不在此范围的的节点或者服务使用此证书就会报证书不匹配错误。</span><br><span class="line">				10.254.0.1是指kube-apiserver 指定的 service-cluster-ip-range 网段的第一个IP。</span><br><span class="line">	            #hosts配置区域，即一个证书的网站可以是*.youku.com也是可以是*.google.com</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>kubernetes证书和私钥</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=kubernetes kubernetes-csr.json | cfssljson -bare kubernetes	</span><br><span class="line">   知识点： -config 引用的是模板中的默认配置文件，-profiles是指定特定的使用场景，比如ca-config.json中的kubernetes区域</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>创建admin证书</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">cat &gt; admin-csr.json &lt;&lt;EOF</span><br><span class="line">&#123;</span><br><span class="line">  &quot;CN&quot;: &quot;admin&quot;,</span><br><span class="line">  &quot;hosts&quot;: [],</span><br><span class="line">  &quot;key&quot;: &#123;</span><br><span class="line">	&quot;algo&quot;: &quot;rsa&quot;,</span><br><span class="line">	&quot;size&quot;: 2048</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;names&quot;: [</span><br><span class="line">	&#123;</span><br><span class="line">	  &quot;C&quot;: &quot;CN&quot;,</span><br><span class="line">	  &quot;ST&quot;: &quot;GuangDong&quot;,</span><br><span class="line">	  &quot;L&quot;: &quot;ShenZhen&quot;,</span><br><span class="line">	  &quot;O&quot;: &quot;system:masters&quot;,</span><br><span class="line">	  &quot;OU&quot;: &quot;System&quot;</span><br><span class="line">	&#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>生成admin证书和私钥</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=kubernetes admin-csr.json | cfssljson -bare admin</span><br><span class="line">知识点：</span><br><span class="line">   这个admin 证书，是将来生成管理员用的kube config 配置文件用的，现在我们一般建议使用RBAC 来对kubernetes 进行角色权限控制， kubernetes 将证书中的CN 字段 作为User， O 字段作为 Group</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
+                <h4 id="记openvpn客户端安装遇到问题"><strong>记openvpn客户端安装遇到问题</strong></h4>
+<p>因工作需要，最近在研究OPENVPN。因为它免费开源，而且使用社区活跃度较高。<br>
+目前已在windows，IMAC，IPhone，andriod成功部署使用客户端。具体使用方式不再说明，简单说明遇到的问题吧。</p>
+<h5 id="1mac中导入证书的问题">1.MAC中导入证书的问题。</h5>
+<p>mac系统上不支持crt证书，需要转换为pkcs12证书。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl pkcs12 -export -out ca.p12 -inkey ca.key -in ca.crt</span><br></pre></td></tr></table></figure>
+<h5 id="2iphone客户端中导入证书报错">2.iphone客户端中导入证书报错。</h5>
+<p>iphone无法显示的支持证书，需手动将证书添加到ovpn配置文件中。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">#iPhone-OpenVPN客户端配置模板</span><br><span class="line">client</span><br><span class="line">dev tun</span><br><span class="line">connect-retry-max 5</span><br><span class="line">connect-retry 5</span><br><span class="line">resolv-retry 60</span><br><span class="line">#------------------------</span><br><span class="line">remote xxx.xxx.xxx.xxx 3389 tcp-client</span><br><span class="line">#------------------------------------</span><br><span class="line">&lt;http-proxy-user-pass&gt;</span><br><span class="line">kangml</span><br><span class="line">kangml</span><br><span class="line">&lt;/http-proxy-user-pass&gt;</span><br><span class="line">resolv-retry infinite</span><br><span class="line">nobind</span><br><span class="line">persist-key</span><br><span class="line">persist-tun</span><br><span class="line">ns-cert-type server</span><br><span class="line">comp-lzo</span><br><span class="line">verb 3</span><br><span class="line">&lt;ca&gt;</span><br><span class="line">ca.crt CA证书</span><br><span class="line">&lt;/ca&gt;</span><br><span class="line">#----</span><br><span class="line">&lt;cert&gt;</span><br><span class="line">user01.crt 客户端的证书</span><br><span class="line">&lt;/cert&gt;</span><br><span class="line">#----</span><br><span class="line">&lt;key&gt;</span><br><span class="line">user01.key  客户端的秘钥</span><br><span class="line">&lt;/key&gt;</span><br><span class="line">#----</span><br><span class="line">key-direction 1</span><br><span class="line">&lt;tls-auth&gt;</span><br><span class="line">ta.key      TLS-auth密钥</span><br><span class="line">&lt;/tls-auth&gt;</span><br><span class="line">#----</span><br><span class="line">auth-user-pass</span><br><span class="line">#----</span><br><span class="line"></span><br><span class="line">注明： </span><br><span class="line">	1.模板只是参考</span><br><span class="line">	2.通过vim ca.crt 粘贴复制证书里面的文件。</span><br><span class="line">	3.需要注意的是user01.key 客户端的秘钥，不需要全部复制.只需要最后面的 ----BEGIN CERTIFICATE----到----END CERTIFICATE---- 包括这两句都要一起复制。</span><br></pre></td></tr></table></figure>
+<h5 id="3记iphone-xr系列openvpn网络无法连接">3.记iphone xr系列openvpn网络无法连接。</h5>
+<p>​    在IPhone xs和IPhone xr 使用客户端时，提示&quot;network is unavailable， please try to connect later with active network&quot;</p>
+<p>​    原因是openvpn没有触发IOS的授权，一直无法获取IPhone的网络授权。</p>
+<p>​     方法： 转到主界面，点击private tunnel,点击agree，点击sign up，然后允许使用蜂窝网络和无线网络，就可以正常使用了。</p>
 
                 
 
@@ -259,10 +232,10 @@
                 <!-- Pager -->
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/article/kubernetest-master-节点恢复灾备恢复操作指南/" data-toggle="tooltip" data-placement="top" title="kubernetest master 节点恢复灾备恢复操作指南">&larr; Previous Post</a>
-                        </li>
                     
+                        <li class="next">
+                            <a href="/article/Prometheus配置钉钉告警/" data-toggle="tooltip" data-placement="top" title="Prometheus配置钉钉告警">Next Post &rarr;</a>
+                        </li>
                     
                 </ul>
 
@@ -317,7 +290,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="nav">none</ol>
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#记openvpn客户端安装遇到问题"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><strong>&#x8BB0;openvpn&#x5BA2;&#x6237;&#x7AEF;&#x5B89;&#x88C5;&#x9047;&#x5230;&#x95EE;&#x9898;</strong></span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#1mac中导入证书的问题"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">1.MAC&#x4E2D;&#x5BFC;&#x5165;&#x8BC1;&#x4E66;&#x7684;&#x95EE;&#x9898;&#x3002;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#2iphone客户端中导入证书报错"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">2.iphone&#x5BA2;&#x6237;&#x7AEF;&#x4E2D;&#x5BFC;&#x5165;&#x8BC1;&#x4E66;&#x62A5;&#x9519;&#x3002;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#3记iphone-xr系列openvpn网络无法连接"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">3.&#x8BB0;iphone xr&#x7CFB;&#x5217;openvpn&#x7F51;&#x7EDC;&#x65E0;&#x6CD5;&#x8FDE;&#x63A5;&#x3002;</span></a></li></ol></li></ol>
         
         </div>
       </aside>
@@ -337,9 +310,7 @@
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#cfssl" title="cfssl">cfssl</a>
-                        
-                          <a class="tag" href="/tags/#kubernetes" title="kubernetes">kubernetes</a>
+                          <a class="tag" href="/tags/#openvpn" title="openvpn">openvpn</a>
                         
                     </div>
                 </section>

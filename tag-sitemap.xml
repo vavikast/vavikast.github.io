@@ -51,13 +51,6 @@
     </url>
 
     <url>
-        <loc>http://www.vavikast.com/tags/openvpn/</loc>
-        <lastmod>2019-07-10T04:48:18.228Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>http://www.vavikast.com/tags/docker/</loc>
         <lastmod>2019-07-10T04:48:18.228Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -73,7 +66,14 @@
 
     <url>
         <loc>http://www.vavikast.com/tags/prometheus/</loc>
-        <lastmod>2019-07-12T07:41:56.529Z</lastmod>
+        <lastmod>2019-07-23T03:29:59.980Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://www.vavikast.com/tags/openvpn/</loc>
+        <lastmod>2019-07-23T03:32:29.844Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
