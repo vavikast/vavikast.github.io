@@ -141,14 +141,14 @@
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
@@ -198,7 +198,7 @@
             <!-- 标签云 -->
             <div id='tag_cloud' class="tags">
                 
-                    <a href="#cfssl" title="cfssl" rel="1">cfssl</a>
+                    <a href="#cka" title="cka" rel="1">cka</a>
                 
                     <a href="#kubernetes" title="kubernetes" rel="4">kubernetes</a>
                 
@@ -206,11 +206,19 @@
                 
                     <a href="#vmware" title="vmware" rel="1">vmware</a>
                 
+                    <a href="#python" title="python" rel="1">python</a>
+                
                     <a href="#life" title="life" rel="1">life</a>
                 
                     <a href="#etcd" title="etcd" rel="2">etcd</a>
                 
-                    <a href="#cka" title="cka" rel="1">cka</a>
+                    <a href="#ha" title="ha" rel="1">ha</a>
+                
+                    <a href="#golang" title="golang" rel="1">golang</a>
+                
+                    <a href="#gin" title="gin" rel="1">gin</a>
+                
+                    <a href="#gorm" title="gorm" rel="1">gorm</a>
                 
                     <a href="#openvpn" title="openvpn" rel="2">openvpn</a>
                 
@@ -218,7 +226,9 @@
                 
                     <a href="#easyrsa" title="easyrsa" rel="1">easyrsa</a>
                 
-                    <a href="#ha" title="ha" rel="1">ha</a>
+                    <a href="#elasticsearch" title="elasticsearch" rel="1">elasticsearch</a>
+                
+                    <a href="#cfssl" title="cfssl" rel="1">cfssl</a>
                 
             </div>
 
@@ -226,8 +236,8 @@
 
             
             <div class="one-tag-list">
-                <span class="fa fa-tag listing-seperator" id="cfssl">
-                    <span class="tag-text">cfssl</span>
+                <span class="fa fa-tag listing-seperator" id="cka">
+                    <span class="tag-text">cka</span>
                 </span>
                 
                   <!-- <li class="listing-item">
@@ -235,9 +245,9 @@
                   <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
                   </li> -->
                  <div class="post-preview">
-                     <a href="/article/CFSSL使用方法重新整理说明/">
+                     <a href="/article/CKA考试总结/">
                         <h2 class="post-title">
-                            CFSSL使用方法重新整理说明
+                            CKA考试总结
                         </h2>
                         
                     </a>
@@ -389,6 +399,28 @@
             </div>
             
             <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="python">
+                    <span class="tag-text">python</span>
+                </span>
+                
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
+                     <a href="/article/Python多页签自动化登录/">
+                        <h2 class="post-title">
+                            Python多页签自动化登录
+                        </h2>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
                 <span class="fa fa-tag listing-seperator" id="life">
                     <span class="tag-text">life</span>
                 </span>
@@ -448,8 +480,8 @@
             </div>
             
             <div class="one-tag-list">
-                <span class="fa fa-tag listing-seperator" id="cka">
-                    <span class="tag-text">cka</span>
+                <span class="fa fa-tag listing-seperator" id="ha">
+                    <span class="tag-text">ha</span>
                 </span>
                 
                   <!-- <li class="listing-item">
@@ -457,9 +489,75 @@
                   <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
                   </li> -->
                  <div class="post-preview">
-                     <a href="/article/CKA考试总结/">
+                     <a href="/article/kubernetes-v1-14-3-HA集群安装/">
                         <h2 class="post-title">
-                            CKA考试总结
+                            kubernetes v1.14.3 HA集群安装
+                        </h2>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="golang">
+                    <span class="tag-text">golang</span>
+                </span>
+                
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
+                     <a href="/article/基于Go博客wblog的理解和修改/">
+                        <h2 class="post-title">
+                            基于Go博客wblog的理解和修改
+                        </h2>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="gin">
+                    <span class="tag-text">gin</span>
+                </span>
+                
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
+                     <a href="/article/基于Go博客wblog的理解和修改/">
+                        <h2 class="post-title">
+                            基于Go博客wblog的理解和修改
+                        </h2>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="gorm">
+                    <span class="tag-text">gorm</span>
+                </span>
+                
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
+                     <a href="/article/基于Go博客wblog的理解和修改/">
+                        <h2 class="post-title">
+                            基于Go博客wblog的理解和修改
                         </h2>
                         
                     </a>
@@ -551,8 +649,8 @@
             </div>
             
             <div class="one-tag-list">
-                <span class="fa fa-tag listing-seperator" id="ha">
-                    <span class="tag-text">ha</span>
+                <span class="fa fa-tag listing-seperator" id="elasticsearch">
+                    <span class="tag-text">elasticsearch</span>
                 </span>
                 
                   <!-- <li class="listing-item">
@@ -560,9 +658,31 @@
                   <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
                   </li> -->
                  <div class="post-preview">
-                     <a href="/article/kubernetes-v1-14-3-HA集群安装/">
+                     <a href="/article/搭建办公环境ElasticSearch日志分析系统/">
                         <h2 class="post-title">
-                            kubernetes v1.14.3 HA集群安装
+                            搭建办公环境ElasticSearch日志分析系统
+                        </h2>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="cfssl">
+                    <span class="tag-text">cfssl</span>
+                </span>
+                
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
+                     <a href="/article/CFSSL使用方法重新整理说明/">
+                        <h2 class="post-title">
+                            CFSSL使用方法重新整理说明
                         </h2>
                         
                     </a>
@@ -609,7 +729,7 @@
 
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; vavikast 2019 
+                    Copyright &copy; vavikast 2020 
                     <br>
                     Theme by <a href="http://beantech.org">BeanTech</a> 
                     <span style="display: inline-block; margin: 0 5px;">

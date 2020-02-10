@@ -3,77 +3,112 @@
 
     <url>
         <loc>http://www.vavikast.com/tags/cfssl/</loc>
-        <lastmod>2019-07-10T04:48:18.202Z</lastmod>
+        <lastmod>2020-02-06T04:27:50.790Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>http://www.vavikast.com/tags/cka/</loc>
-        <lastmod>2019-07-10T04:48:18.202Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>http://www.vavikast.com/tags/vmware/</loc>
-        <lastmod>2019-07-10T04:48:18.217Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>http://www.vavikast.com/tags/life/</loc>
-        <lastmod>2019-07-10T04:48:18.218Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>http://www.vavikast.com/tags/ha/</loc>
-        <lastmod>2019-07-10T04:48:18.226Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>http://www.vavikast.com/tags/kubernetes/</loc>
-        <lastmod>2019-07-10T04:48:18.227Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>http://www.vavikast.com/tags/etcd/</loc>
-        <lastmod>2019-07-10T04:48:18.227Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>http://www.vavikast.com/tags/docker/</loc>
-        <lastmod>2019-07-10T04:48:18.228Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>http://www.vavikast.com/tags/easyrsa/</loc>
-        <lastmod>2019-07-10T04:48:18.228Z</lastmod>
+        <lastmod>2020-02-06T04:27:50.791Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>http://www.vavikast.com/tags/prometheus/</loc>
-        <lastmod>2019-07-23T03:29:59.980Z</lastmod>
+        <lastmod>2020-02-06T04:27:50.792Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://www.vavikast.com/tags/vmware/</loc>
+        <lastmod>2020-02-06T04:27:50.792Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://www.vavikast.com/tags/life/</loc>
+        <lastmod>2020-02-06T04:27:50.792Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://www.vavikast.com/tags/kubernetes/</loc>
+        <lastmod>2020-02-06T04:27:50.803Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://www.vavikast.com/tags/etcd/</loc>
+        <lastmod>2020-02-06T04:27:50.803Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://www.vavikast.com/tags/ha/</loc>
+        <lastmod>2020-02-06T04:27:50.803Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>http://www.vavikast.com/tags/openvpn/</loc>
-        <lastmod>2019-07-23T03:32:29.844Z</lastmod>
+        <lastmod>2020-02-06T04:27:50.805Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://www.vavikast.com/tags/docker/</loc>
+        <lastmod>2020-02-06T04:27:50.805Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://www.vavikast.com/tags/easyrsa/</loc>
+        <lastmod>2020-02-06T04:27:50.805Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://www.vavikast.com/tags/golang/</loc>
+        <lastmod>2020-02-10T07:15:35.791Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://www.vavikast.com/tags/gin/</loc>
+        <lastmod>2020-02-10T07:15:35.791Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://www.vavikast.com/tags/gorm/</loc>
+        <lastmod>2020-02-10T07:15:35.791Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://www.vavikast.com/tags/python/</loc>
+        <lastmod>2020-02-10T07:16:00.573Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://www.vavikast.com/tags/elasticsearch/</loc>
+        <lastmod>2020-02-10T07:17:29.347Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
