@@ -141,14 +141,14 @@
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
@@ -208,6 +208,117 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/article/基于Go博客wblog的理解和修改/">
+        <h2 class="post-title">
+                                 
+            基于Go博客wblog的理解和修改
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            基于Go博客wblog的理解和修改。
+初衷
+​		自学Go语言已经一段时间，想通过博客更深入理解go语言。最终通过Gin语言定位了wblog博客框架。wblog是基于基于gin+gorm开发的个人博客项目。
+​		学习别人的博客是一个抓狂的过程，不仅要疯狂学习扩展的知识，比如gin框架，gorm，还要理解原作者的思想和构建过程。
+​		原项目仅做了简单的英文注释。我则根据原项目增添了很多自己......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by vavikast on
+            2020-02-07
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#golang" title="golang">golang</a>
+            
+              <a href="/tags/#gin" title="gin">gin</a>
+            
+              <a href="/tags/#gorm" title="gorm">gorm</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/Python多页签自动化登录/">
+        <h2 class="post-title">
+                                 
+            Python多页签自动化登录
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            Python多页签自动化登录
+​		自己管理了好几个系统，虽然实现自动监控报警，但是还还想要人工检查。为了提高效率，现在写了一个脚本实现多个系统的自动化登录。
+脚本选择：
+
+开始想用bat实现，发现走不通，账号和密码登录认证的方式无法解决。有方法的小伙伴可以推荐。
+后面使用python实现，主要是方案成熟，可参考案例多啊。
+
+浏览器选择
+​		chrome浏览器：因为习惯了。
+事前准备
+
+
+......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by vavikast on
+            2019-12-30
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#python" title="python">python</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/搭建办公环境ElasticSearch日志分析系统/">
+        <h2 class="post-title">
+                                 
+            搭建办公环境ElasticSearch日志分析系统
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            搭建办公环境ElasticSearch 日志分析系统
+​			计划将公司的防火墙+交换机+服务器（centos7）+ Vmware+Windows server纳入到监控范围，所以开启了ELK监控之旅。
+​			本文采用ELK架构栈进行组建，万丈高楼平地起，虽然开始比较简陋，后期会不断完善这个日志分析系统。
+​	全文框架如下：
+​			Hillstone：                  ......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by vavikast on
+            2019-12-20
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#elasticsearch" title="elasticsearch">elasticsearch</a>
+            
+        </div>
+    
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -348,9 +459,9 @@ mac系统上不支持crt证书，需要转换为pkcs12证书。
         </p>
         <div class="tags">
             
-              <a href="/tags/#kubernetes" title="kubernetes">kubernetes</a>
-            
               <a href="/tags/#cka" title="cka">cka</a>
+            
+              <a href="/tags/#kubernetes" title="kubernetes">kubernetes</a>
             
         </div>
     
@@ -491,119 +602,16 @@ vmware_exporter由于编译问题不成功，选择使用docker方式执行。vm
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/article/通过docker搭建openvpn/">
-        <h2 class="post-title">
-                                 
-            通过docker搭建openvpn
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            通过docker搭建openvpn
-1、安装docker
-yum install yum-utils device-mapper-persistent-data lvm2 -y
-curl -L https://download.docker.com/linux/centos/docker-ce.repo -o /etc/yum.repos.d/docker-ce.repo
-sed -i 's......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by vavikast on
-            2019-07-09
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#openvpn" title="openvpn">openvpn</a>
-            
-              <a href="/tags/#docker" title="docker">docker</a>
-            
-              <a href="/tags/#easyrsa" title="easyrsa">easyrsa</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/kubernetest-master-节点恢复灾备恢复操作指南/">
-        <h2 class="post-title">
-                                 
-            kubernetest master 节点恢复灾备恢复操作指南
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            kubernetest master 节点恢复灾备恢复操作指南
-本文基本转载别人文章，文末会标明出处。
-1. 基本说明
-本文档简述了Kubernetes主节点灾备恢复的相关步骤，供在发生k8s master崩溃时操作。k8s里部署了etcd群集, 主节点控制组件的高可用节点，灾备恢复也是必须要实现的操作，才能形成完备的企业级服务方案。K8s集群在master节点发生故障时，并不会影响已有的p......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by vavikast on
-            2019-07-09
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#kubernetes" title="kubernetes">kubernetes</a>
-            
-              <a href="/tags/#etcd" title="etcd">etcd</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/CFSSL使用方法重新整理说明/">
-        <h2 class="post-title">
-                                 
-            CFSSL使用方法重新整理说明
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            CFSSL是CloudFlare的PKI / TLS瑞士军刀。它既是命令行工具，也是用于签名，验证和捆绑TLS证书的HTTP API服务器.
-
-
-​    下载安装CFSSL
-用于签名，验证和捆绑TLS证书的HTTP API工具)（master节点
-1234567wget https://pkg.cfssl.org/R1.2/cfssl-certinfo_linux-amd64wget ht......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by vavikast on
-            2019-07-09
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#cfssl" title="cfssl">cfssl</a>
-            
-              <a href="/tags/#kubernetes" title="kubernetes">kubernetes</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
 
 <ul class="pager">
     
+    
+        <li class="next">
+            <a href="/page/2/">Older Posts &rarr;</a>
+        </li>
     
 </ul>
 
@@ -635,13 +643,13 @@ sed -i 's......
     <div class="tags">
         
             
+            <a href="/tags/#prometheus" title="prometheus" rel="3">prometheus</a>
+            
+        
+            
         
             
             <a href="/tags/#kubernetes" title="kubernetes" rel="4">kubernetes</a>
-            
-        
-            
-            <a href="/tags/#prometheus" title="prometheus" rel="3">prometheus</a>
             
         
             
@@ -650,6 +658,16 @@ sed -i 's......
         
             
             <a href="/tags/#etcd" title="etcd" rel="2">etcd</a>
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
             
         
             
@@ -717,23 +735,23 @@ sed -i 's......
     <ul>
       
         <li>
+          <a href="/article/基于Go博客wblog的理解和修改/">基于Go博客wblog的理解和修改</a>
+        </li>
+      
+        <li>
+          <a href="/article/Python多页签自动化登录/">Python多页签自动化登录</a>
+        </li>
+      
+        <li>
+          <a href="/article/搭建办公环境ElasticSearch日志分析系统/">搭建办公环境ElasticSearch日志分析系统</a>
+        </li>
+      
+        <li>
           <a href="/article/记openvpn客户端安装遇到问题/">记openvpn客户端安装遇到问题</a>
         </li>
       
         <li>
           <a href="/article/Prometheus配置钉钉告警/">Prometheus配置钉钉告警</a>
-        </li>
-      
-        <li>
-          <a href="/article/Alertmanger中邮箱配置/">Alertmanger中邮箱配置</a>
-        </li>
-      
-        <li>
-          <a href="/article/CKA考试总结/">CKA考试总结</a>
-        </li>
-      
-        <li>
-          <a href="/article/hello-hexo/">Hello,Hexo!</a>
         </li>
       
     </ul>
@@ -758,7 +776,7 @@ sed -i 's......
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a><span class="archive-list-count">10</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a><span class="archive-list-count">10</span></li></ul>
     </div>
 
         <hr>
@@ -800,7 +818,7 @@ sed -i 's......
 
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; vavikast 2019 
+                    Copyright &copy; vavikast 2020 
                     <br>
                     Theme by <a href="http://beantech.org">BeanTech</a> 
                     <span style="display: inline-block; margin: 0 5px;">

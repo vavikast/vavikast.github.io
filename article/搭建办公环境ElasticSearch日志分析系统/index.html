@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          搭建办公环境ElasticSearch日志分析系统 - vavikast | Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://www.vavikast.com/article/搭建办公环境ElasticSearch日志分析系统/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+
+    <link rel="stylesheet" href="/css/donate.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('/img/article_header/article_header.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#elasticsearch" title="elasticsearch">elasticsearch</a>
+                            
+                        </div>
+                        <h1>搭建办公环境ElasticSearch日志分析系统</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by vavikast on
+                            2019-12-20
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">vavikast</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="搭建办公环境elasticsearch-日志分析系统">搭建办公环境ElasticSearch 日志分析系统</h1>
+<p>​			计划将公司的防火墙+交换机+服务器（centos7）+ Vmware+Windows server纳入到监控范围，所以开启了ELK监控之旅。</p>
+<p>​			本文采用ELK架构栈进行组建，万丈高楼平地起，虽然开始比较简陋，后期会不断完善这个日志分析系统。</p>
+<p>​	全文框架如下：</p>
+<p>​			Hillstone：                  syslog→logstash→elasticsearch→kibana</p>
+<p>​			H3C:                              syslog→logstash→elasticsearch→kibana</p>
+<p>​			ESXI:                              syslog→logstash→elasticsearch→kibana</p>
+<p>​            Vcenter:                        syslog→logstash→elasticsearch→kibana</p>
+<p>​			Windows server:         winlogbeat→logstash→elasticsearch→kibana</p>
+<p>​			linux server：			  filebeate→lasticsearch→kibana</p>
+<p>​	ELK说明：</p>
+<p>​			ELK1: 192.168.20.18:9200</p>
+<p>​			ELK2: 192.168.20.19:9200</p>
+<p>​	规划：</p>
+<p>​			Logstash: 192.168.20.18</p>
+<p>​			不同服务根据端口不同进行标记，创建不同的索引。</p>
+<p>​</p>
+<h2 id="1-hillstone部分">1 Hillstone部分</h2>
+<h3 id="11-hillstone配置">1.1 Hillstone配置</h3>
+<h4 id="111-配置步骤">1.1.1 配置步骤</h4>
+<p>​	本文通过web界面配置，当然也能进行命令行配置，具体配置请参考链接。</p>
+<p>​	找到Stoneos-日志管理-log配置-日志管理器，配置服务器日志：<br>
+​				主机名： 192.168.20.18<br>
+​				绑定方式： 虚拟路由器 trust-vr<br>
+​				协议： UDP<br>
+​				端口： 514</p>
+<p>​				//我使用的root运行，非root账号使用端口在1024以上。</p>
+<p>​		<img src="https://i.loli.net/2019/12/06/JZOcqSkiVoTp8nU.png" alt="image.png"></p>
+<p><img src="https://i.loli.net/2019/12/06/CtlWXfbrxE5djTJ.png" alt="image.png"></p>
+<p><img src="https://i.loli.net/2019/12/06/oMpAyXRQx9LPO1b.png" alt="image.png"></p>
+<h4 id="112-参考链接">1.1.2 参考链接</h4>
+<p><a href="https://elasticsearch.cn/question/8247" target="_blank" rel="noopener">elk收集数据中心网络设备日志</a></p>
+<p><a href="https://wenku.baidu.com/view/2c6a500149649b6649d747c4.html" target="_blank" rel="noopener">hillstone常见配置命令</a></p>
+<h3 id="12-添加logstash-配置文件">1.2 添加logstash 配置文件</h3>
+<h4 id="121-创建配置测试文件">1.2.1  创建配置测试文件</h4>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">cat  &gt; /data/config/test-hillstone.config &lt;&lt; EOF</span><br><span class="line">input&#123;</span><br><span class="line">        udp &#123;port =&gt; 518 type =&gt; &quot;Hillstone&quot;&#125;</span><br><span class="line">&#125;</span><br><span class="line">output &#123;</span><br><span class="line">    stdout &#123; codec=&gt; rubydebug &#125;</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line">logstash -f test-hillstone.config</span><br></pre></td></tr></table></figure>
+<h4 id="122-选取其中一条日志进行分析调试">1.2.2  选取其中一条日志进行分析调试。</h4>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;190&gt;Nov 29 17:24:52 1404726150004842(root) 44243624 Traffic@FLOW: SESSION: 10.6.2.43:49608-&gt;192.168.20.160:11800(TCP), application TCP-ANY, interface tunnel6, vr trust-vr, policy 1, user -@-, host -, send packets 1,send bytes 74,receive packets 1,receive bytes 110,start time 2019-11-29 17:24:50,close time 2019-11-29 17:24:52,session end,TCP RST\n\u0000</span><br></pre></td></tr></table></figure>
+<h4 id="123logstash分析说明">1.2.3Logstash分析说明</h4>
+<pre><code>	可以通过grok debug网站进行自动匹配（https://grokdebug.herokuapp.com/discover?#），再根据分析出来的日志，进行二次调整。
+	同样晚上有很多案例进行参考，可以先去参考别人想法，再补充自己的想法。
+	关于grok部分详细讲解，请参考https://coding.imooc.com/class/181.html，老师讲的很棒，当然吾爱破解论坛和B站，有免费版。
+</code></pre>
+<h4 id="124-logstash综合配置">1.2.4  Logstash综合配置</h4>
+<p>​		只选取了会话+NAT部分</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">cat  &gt; /data/config/hillstone.config&lt;&lt; EOF</span><br><span class="line">input&#123;</span><br><span class="line">        udp &#123;</span><br><span class="line">		port =&gt; 518 </span><br><span class="line">		type =&gt; &quot;hillstone&quot;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">filter &#123;</span><br><span class="line">    grok &#123;</span><br><span class="line">##流量日志</span><br><span class="line"></span><br><span class="line">#SESSION会话结束日志</span><br><span class="line">        match =&gt; &#123; &quot;message&quot; =&gt; &quot;\&lt;%&#123;BASE10NUM:syslog_pri&#125;\&gt;%&#123;SYSLOGTIMESTAMP:timestamp&#125;\ %&#123;BASE10NUM:serial&#125;\(%&#123;WORD:ROOT&#125;\) %&#123;DATA:logid&#125;\ %&#123;DATA:Sort&#125;@%&#123;DATA:Class&#125;\: %&#123;DATA:module&#125;\: %&#123;IPV4:srcip&#125;\:%&#123;BASE10NUM:srcport&#125;-&gt;%&#123;IPV4:dstip&#125;:%&#123;WORD:dstport&#125;\(%&#123;DATA:protocol&#125;\), application %&#123;USER:app&#125;\, interface %&#123;DATA:interface&#125;\, vr %&#123;USER:vr&#125;\, policy %&#123;DATA:policy&#125;\, user %&#123;USERNAME:user&#125;\@%&#123;DATA:AAAserver&#125;\, host %&#123;USER:HOST&#125;\, send packets %&#123;BASE10NUM:sendPackets&#125;\,send bytes %&#123;BASE10NUM:sendBytes&#125;\,receive packets %&#123;BASE10NUM:receivePackets&#125;\,receive bytes %&#123;BASE10NUM:receiveBytes&#125;\,start time %&#123;TIMESTAMP_ISO8601:startTime&#125;\,close time %&#123;TIMESTAMP_ISO8601:closeTime&#125;\,session %&#123;WORD:state&#125;\,%&#123;GREEDYDATA:reason&#125;&quot;&#125;</span><br><span class="line">#SESSION会话开始日志</span><br><span class="line">        match =&gt; &#123; &quot;message&quot; =&gt; &quot;\&lt;%&#123;BASE10NUM:syslog_pri&#125;\&gt;%&#123;SYSLOGTIMESTAMP:timestamp&#125;\ %&#123;BASE10NUM:serial&#125;\(%&#123;WORD:ROOT&#125;\) %&#123;DATA:logid&#125;\ %&#123;DATA:Sort&#125;@%&#123;DATA:Class&#125;\: %&#123;DATA:module&#125;\: %&#123;IPV4:srcip&#125;\:%&#123;BASE10NUM:srcport&#125;-&gt;%&#123;IPV4:dstip&#125;:%&#123;WORD:dstport&#125;\(%&#123;DATA:protocol&#125;\), interface %&#123;DATA:interface&#125;\, vr %&#123;DATA:vr&#125;\, policy %&#123;DATA:policy&#125;\, user %&#123;USERNAME:user&#125;\@%&#123;DATA:AAAserver&#125;\, host %&#123;USER:HOST&#125;\, session %&#123;WORD:state&#125;%&#123;GREEDYDATA:reason&#125;&quot;&#125;</span><br><span class="line">#SNAT日志</span><br><span class="line">        match =&gt; &#123; &quot;message&quot; =&gt; &quot;\&lt;%&#123;BASE10NUM:syslog_pri&#125;\&gt;%&#123;SYSLOGTIMESTAMP:timestamp&#125;\ %&#123;BASE10NUM:serial&#125;\(%&#123;WORD:ROOT&#125;\) %&#123;DATA:logid&#125;\ %&#123;DATA:Sort&#125;@%&#123;DATA:Class&#125;\: %&#123;DATA:module&#125;\: %&#123;IPV4:srcip&#125;\:%&#123;BASE10NUM:srcport&#125;-&gt;%&#123;IPV4:dstip&#125;:%&#123;WORD:dstport&#125;\(%&#123;DATA:protocol&#125;\), %&#123;WORD:state&#125; to %&#123;IPV4:snatip&#125;\:%&#123;BASE10NUM:snatport&#125;\, vr\ %&#123;DATA:vr&#125;\, user\ %&#123;USERNAME:user&#125;\@%&#123;DATA:AAAserver&#125;\, host\ %&#123;DATA:HOST&#125;\, rule\ %&#123;BASE10NUM:rule&#125;&quot;&#125;</span><br><span class="line">#DNAT日志</span><br><span class="line">                match =&gt; &#123; &quot;message&quot; =&gt; &quot;\&lt;%&#123;BASE10NUM:syslog_pri&#125;\&gt;%&#123;SYSLOGTIMESTAMP:timestamp&#125;\ %&#123;BASE10NUM:serial&#125;\(%&#123;WORD:ROOT&#125;\) %&#123;DATA:logid&#125;\ %&#123;DATA:Sort&#125;@%&#123;DATA:Class&#125;\: %&#123;DATA:module&#125;\: %&#123;IPV4:srcip&#125;\:%&#123;BASE10NUM:srcport&#125;-&gt;%&#123;IPV4:dstip&#125;:%&#123;WORD:dstport&#125;\(%&#123;DATA:protocol&#125;\), %&#123;WORD:state&#125; to %&#123;IPV4:dnatip&#125;\:%&#123;BASE10NUM:dnatport&#125;\, vr\ %&#123;DATA:vr&#125;\, user\ %&#123;USERNAME:user&#125;\@%&#123;DATA:AAAserver&#125;\, host\ %&#123;DATA:HOST&#125;\, rule\ %&#123;BASE10NUM:rule&#125;&quot;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    mutate &#123;</span><br><span class="line">				lowercase =&gt; [ &quot;module&quot; ]</span><br><span class="line">                remove_field =&gt; [&quot;host&quot;, &quot;message&quot;, &quot;ROOT&quot;, &quot;HOST&quot;, &quot;serial&quot;, &quot;syslog_pri&quot;, &quot;timestamp&quot;, &quot;mac&quot;, &quot;AAAserver&quot;, &quot;user&quot;]</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br><span class="line">output &#123;</span><br><span class="line">    elasticsearch &#123;</span><br><span class="line">    hosts =&gt; &quot;192.168.20.18:9200&quot;  #elasticsearch服务地址</span><br><span class="line">    index =&gt; &quot;logstash-hillstone-%&#123;module&#125;-%&#123;state&#125;-%&#123;+YYYY.MM.dd&#125;&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+<h5 id="3123-参考文件">3.1.2.3 参考文件</h5>
+<p><a href="https://github.com/sectong/elk-docker-hillstone/blob/master/config/14-filters-hillstone.conf" target="_blank" rel="noopener">hillstone中logstash配置参考</a></p>
+<p><a href="https://elasticsearch.cn/question/8247" target="_blank" rel="noopener">elk收集数据中心网络设备日志</a></p>
+<p><a href="https://www.jianshu.com/p/459f3b12f56b" target="_blank" rel="noopener">山石hillstone Logstash配置流程</a></p>
+<p><a href="https://www.bilibili.com/video/av77345745?from=search&amp;seid=5493175331969085253" target="_blank" rel="noopener">ELK从入门到实践</a></p>
+<h2 id="2-h3c交换机部分">2 H3C交换机部分</h2>
+<h2 id="21-h3c-syslog转发">2.1 H3C Syslog转发</h2>
+<h4 id="211-h3c交换机配置">2.1.1 H3C交换机配置</h4>
+<p>​	本文通过命令行进行配置，具体配置请参考链接。</p>
+<ul>
+<li>
+<p>​	将交换机的时间设置正确</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">clock datetime hh:mm:ss year/month/day</span><br><span class="line">save force</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>设置交换机syslog转发。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">system-view</span><br><span class="line">info-center enable // 开启info-center</span><br><span class="line">info-center loghost 192.168.20.18 port 516 facility local8 // 设置日志主机/端口/日志级别</span><br><span class="line">info-center source  default  loghost  level   informational  //设置日志级别</span><br><span class="line">save force</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="212-参考链接">2.1.2 参考链接</h4>
+<p>​	<a href="https://www.cnblogs.com/hello1123/p/9202309.html" target="_blank" rel="noopener">H3C设置时间</a></p>
+<p>​	<a href="https://blog.csdn.net/vbaspdelphi/article/details/76735949" target="_blank" rel="noopener">H3C网络日志转发</a></p>
+<p>​	<a href="http://www.voidcn.com/article/p-kmrkuavo-bha.html" target="_blank" rel="noopener">H3C配置日志主机</a></p>
+<h3 id="22-添加logstash-配置文件">2.2 添加logstash 配置文件</h3>
+<h4 id="221-创建配置测试文件">2.2.1  创建配置测试文件</h4>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cat  &gt; /data/config/test-h3c.congfig &lt;&lt; EOF</span><br><span class="line">input&#123;</span><br><span class="line">        udp &#123;port =&gt; 516 type =&gt; &quot;h3c&quot;&#125;</span><br><span class="line">&#125;</span><br><span class="line">output &#123;</span><br><span class="line">    stdout &#123; codec=&gt; rubydebug &#125;</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+<h4 id="222-选取一条日志进行分析调试">2.2.2 选取一条日志进行分析调试。</h4>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;190&gt;Nov 30 16:27:23 1404726150004842(root) 44243622 Traffic@FLOW: SESSION: 10.6.4.178:48150-&gt;192.168.20.161:11800(TCP), interface tunnel6, vr trust-vr, policy 1, user -@-, host -, session start\n\u0000</span><br></pre></td></tr></table></figure>
+<h4 id="223-mutate基本用法说明">2.2.3 mutate基本用法说明</h4>
+<p>​			参考链接： <a href="https://blog.csdn.net/qq_34624315/article/details/83013531" target="_blank" rel="noopener">https://blog.csdn.net/qq_34624315/article/details/83013531</a></p>
+<h4 id="224-综合配置">2.2.4 综合配置。</h4>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">cat &gt; H3C.conf &lt;&lt;EOF</span><br><span class="line">###h3c 日志过滤</span><br><span class="line">    grok &#123;</span><br><span class="line">        match =&gt; &#123; &quot;message&quot; =&gt; &quot;\&lt;%&#123;BASE10NUM:syslog_pri&#125;\&gt;%&#123;SYSLOGTIMESTAMP:timestamp&#125;\ %&#123;DATA:year&#125; %&#123;DATA:hostname&#125; \%\%%&#123;DATA:ddModuleName&#125;\/%&#123;POSINT:severity&#125;\/%&#123;DATA:brief&#125;\: %&#123;GREEDYDATA:reason&#125;&quot; &#125;       </span><br><span class="line">        add_field =&gt; &#123;&quot;severity_code&quot; =&gt; &quot;%&#123;severity&#125;&quot;&#125;          </span><br><span class="line">        &#125;</span><br><span class="line">    mutate &#123;	</span><br><span class="line">		gsub =&gt; [</span><br><span class="line">            &quot;severity&quot;, &quot;0&quot;, &quot;Emergency&quot;,</span><br><span class="line">            &quot;severity&quot;, &quot;1&quot;, &quot;Alert&quot;,</span><br><span class="line">            &quot;severity&quot;, &quot;2&quot;, &quot;Critical&quot;,</span><br><span class="line">            &quot;severity&quot;, &quot;3&quot;, &quot;Error&quot;,</span><br><span class="line">            &quot;severity&quot;, &quot;4&quot;, &quot;Warning&quot;,</span><br><span class="line">            &quot;severity&quot;, &quot;5&quot;, &quot;Notice&quot;,</span><br><span class="line">            &quot;severity&quot;, &quot;6&quot;, &quot;Informational&quot;,</span><br><span class="line">            &quot;severity&quot;, &quot;7&quot;, &quot;Debug&quot;</span><br><span class="line">        ]</span><br><span class="line">        remove_field =&gt; [&quot;message&quot;, &quot;syslog_pri&quot;]</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br><span class="line">output &#123;</span><br><span class="line">	stdout &#123; codec=&gt; rubydebug &#125;</span><br><span class="line">#    elasticsearch &#123;</span><br><span class="line">#    hosts =&gt; &quot;192.168.20.18:9200&quot;  #elasticsearch服务地址</span><br><span class="line">#    index =&gt; &quot;logstash-h3c-%&#123;+YYYY.MM.dd&#125;&quot;</span><br><span class="line">#    &#125;</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+<h4 id="225-参考文件">2.2.5 参考文件</h4>
+<p><a href="https://github.com/qyecst/notes/blob/master/elk%E6%8E%A5%E5%85%A5%E4%BA%A4%E6%8D%A2%E6%9C%BA%26%E8%B7%AF%E7%94%B1%E5%99%A8%E7%AD%89%E7%BD%91%E7%BB%9C%E8%AE%BE%E5%A4%87%E6%97%A5%E5%BF%97.md" target="_blank" rel="noopener">交换路由等网络设备logstash配置</a></p>
+<p><a href="https://gist.github.com/mrlesmithjr/72e99caf36fcc2b5d323" target="_blank" rel="noopener">logstash配置文件</a></p>
+<h2 id="3-vmware部分">3 Vmware部分</h2>
+<h3 id="31-esxi日志收集部分">3.1 Esxi日志收集部分</h3>
+<p>​			    主要是收集ESXI机器日志，方便进行安全日志分析；</p>
+<p>​			    主要通过syslog进行日志收集，再通过ELK栈提供的logstash进行分析</p>
+<p>​			    ESXI-syslog–logstash–elasticsearch</p>
+<h4 id="311-esxi机器syslog服务器配置">3.1.1 Esxi机器syslog服务器配置</h4>
+<h5 id="3111-配置步骤">3.1.1.1 配置步骤</h5>
+<p>​	本文通过客户端配置，当然也能进行web配置，方法基本一致，具体配置请参考链接。</p>
+<ul>
+<li>
+<p>​	开启syslog服务：</p>
+<p>打开esxi客户端-选择主机-主机配置-高级设置-syslog-设置远程syslog服务器为： udp://192.168.20.18:514</p>
+<p><img src="https://i.loli.net/2019/12/03/FvIjaylK15ikZnM.png" alt="1575357915_1_.jpg"></p>
+</li>
+<li>
+<p>允许防火墙放行。</p>
+</li>
+</ul>
+<p>打开esxi客户端-选择主机-主机配置-安全配置文件-防火墙-编辑-勾选syslog服务器，点击确定。</p>
+<p><img src="https://i.loli.net/2019/12/03/y4zejJZC5RIW7Pu.png" alt="1575358020_1_.jpg"></p>
+<p><img src="https://i.loli.net/2019/12/03/b2OIAMklJKGWf4a.png" alt="1575358066_1_.jpg"></p>
+<h5 id="3112-参考链接">3.1.1.2 参考链接</h5>
+<p><a href="%5Bhttps://techexpert.tips/zh-hans/vmware-zh-hans/vmware-esxi-syslog%E9%85%8D%E7%BD%AE/%5D(https://techexpert.tips/zh-hans/vmware-zh-hans/vmware-esxi-syslog%E9%85%8D%E7%BD%AE/)">Vmware Esxi syslog配置</a></p>
+<p><a href="https://kb.vmware.com/articleview?docid=2003322&amp;lang=zh_CN" target="_blank" rel="noopener">在Esxi上配置syslog</a></p>
+<p><a href="https://mtalavera.wordpress.com/2015/05/18/monitoring-vmware-esxi-with-the-elk-stack/" target="_blank" rel="noopener">Monitoring VMWare ESXi with the ELK Stack</a></p>
+<h4 id="312-添加logstash-配置文件">3.1.2 添加logstash 配置文件</h4>
+<h5 id="3121-创建配置测试文件">3.1.2.1 创建配置测试文件</h5>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">  cat  &gt; /data/config/test-vmware.config &lt;&lt; EOF</span><br><span class="line">  input&#123;</span><br><span class="line">          udp &#123;port =&gt; 514 type =&gt; &quot;Hillstone&quot;&#125;</span><br><span class="line">  &#125;</span><br><span class="line">  output &#123;</span><br><span class="line">      stdout &#123; codec=&gt; rubydebug &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  EOF</span><br><span class="line">logstash -f test-vmware.config</span><br></pre></td></tr></table></figure>
+<h5 id="3122-选取其中一条日志进行分析调试">3.1.2.2 选取其中一条日志进行分析调试。</h5>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;167&gt;2019-12-03T07:36:11.689Z localhost.localdomain Vpxa: verbose vpxa[644C8B70] [Originator@6876 sub=VpxaHalCnxHostagent opID=WFU-2d14bc3d] [WaitForUpdatesDone] Completed callback\n</span><br></pre></td></tr></table></figure>
+<h5 id="3123-结合网上的综合案例对测试文件进行配置改造">3.1.2.3 结合网上的综合案例对测试文件进行配置改造。</h5>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">cat &gt; vmware.conf &lt;&lt;EOF</span><br><span class="line">input&#123;</span><br><span class="line">        udp &#123;</span><br><span class="line">        port =&gt; 514</span><br><span class="line">        type =&gt; &quot;vmware&quot;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">filter &#123;</span><br><span class="line">	if &quot;vmware&quot; in [type] &#123;</span><br><span class="line">		grok &#123;</span><br><span class="line">			break_on_match =&gt; true</span><br><span class="line">			match =&gt; [</span><br><span class="line">				&quot;message&quot;, &quot;&lt;%&#123;POSINT:syslog_pri&#125;&gt;%&#123;TIMESTAMP_ISO8601:syslog_timestamp&#125; %&#123;SYSLOGHOST:syslog_hostname&#125; %&#123;SYSLOGPROG:syslog_program&#125;: (?&lt;message-body&gt;(?&lt;message_system_info&gt;(?:\[%&#123;DATA:message_thread_id&#125; %&#123;DATA:syslog_level&#125; \&apos;%&#123;DATA:message_service&#125;\&apos;\ ?%&#123;DATA:message_opID&#125;])) \[%&#123;DATA:message_service_info&#125;]\ (?&lt;syslog_message&gt;(%&#123;GREEDYDATA&#125;)))&quot;,</span><br><span class="line">				&quot;message&quot;, &quot;&lt;%&#123;POSINT:syslog_pri&#125;&gt;%&#123;TIMESTAMP_ISO8601:syslog_timestamp&#125; %&#123;SYSLOGHOST:syslog_hostname&#125; %&#123;SYSLOGPROG:syslog_program&#125;: (?&lt;message-body&gt;(?&lt;message_system_info&gt;(?:\[%&#123;DATA:message_thread_id&#125; %&#123;DATA:syslog_level&#125; \&apos;%&#123;DATA:message_service&#125;\&apos;\ ?%&#123;DATA:message_opID&#125;])) (?&lt;syslog_message&gt;(%&#123;GREEDYDATA&#125;)))&quot;,</span><br><span class="line">				&quot;message&quot;, &quot;&lt;%&#123;POSINT:syslog_pri&#125;&gt;%&#123;TIMESTAMP_ISO8601:syslog_timestamp&#125; %&#123;SYSLOGHOST:syslog_hostname&#125; %&#123;SYSLOGPROG:syslog_program&#125;: %&#123;GREEDYDATA:syslog_message&#125;&quot;</span><br><span class="line">			]</span><br><span class="line">		&#125;</span><br><span class="line">		 date &#123;</span><br><span class="line">                        match =&gt; [ &quot;syslog_timestamp&quot;, &quot;YYYY-MM-ddHH:mm:ss&quot;, &quot;ISO8601&quot; ]</span><br><span class="line">                &#125;</span><br><span class="line">		mutate &#123;</span><br><span class="line">			replace =&gt; [ &quot;@source_host&quot;, &quot;%&#123;syslog_hostname&#125;&quot; ]</span><br><span class="line">		&#125;</span><br><span class="line">		mutate &#123;</span><br><span class="line">			replace =&gt; [ &quot;@message&quot;, &quot;%&#123;syslog_message&#125;&quot; ]</span><br><span class="line">		&#125;</span><br><span class="line">		mutate &#123;</span><br><span class="line">			remove_field =&gt; [&quot;@source_host&quot;,&quot;program&quot;,&quot;@timestamp&quot;,&quot;syslog_hostname&quot;,&quot;@message&quot;]</span><br><span class="line">		&#125;</span><br><span class="line">		if &quot;Device naa&quot; in [message] &#123;</span><br><span class="line">			grok &#123;</span><br><span class="line">				break_on_match =&gt; false</span><br><span class="line">				match =&gt; [</span><br><span class="line">					&quot;message&quot;, &quot;Device naa.%&#123;WORD:device_naa&#125; performance has %&#123;WORD:device_status&#125;%&#123;GREEDYDATA&#125; of %&#123;INT:datastore_latency_from&#125;%&#123;GREEDYDATA&#125; to %&#123;INT:datastore_latency_to&#125;&quot;,</span><br><span class="line">					&quot;message&quot;, &quot;Device naa.%&#123;WORD:device_naa&#125; performance has %&#123;WORD:device_status&#125;%&#123;GREEDYDATA&#125; from %&#123;INT:datastore_latency_from&#125;%&#123;GREEDYDATA&#125; to %&#123;INT:datastore_latency_to&#125;&quot;</span><br><span class="line">				]</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		if &quot;connectivity issues&quot; in [message] &#123;</span><br><span class="line">			grok &#123;</span><br><span class="line">				match =&gt; [</span><br><span class="line">					&quot;message&quot;, &quot;Hostd: %&#123;GREEDYDATA&#125; : %&#123;DATA:device_access&#125; to volume %&#123;DATA:device_id&#125; %&#123;DATA:datastore&#125; (following|due to)&quot;</span><br><span class="line">				]</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		if &quot;WARNING&quot; in [message] &#123;</span><br><span class="line">			grok &#123;</span><br><span class="line">				match =&gt; [</span><br><span class="line">					&quot;message&quot;, &quot;WARNING: %&#123;GREEDYDATA:vmware_warning_msg&#125;&quot;</span><br><span class="line">				]</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">output &#123;</span><br><span class="line">    elasticsearch &#123;</span><br><span class="line">    hosts =&gt; &quot;192.168.20.18:9200&quot;  #elasticsearch服务地址</span><br><span class="line">    index =&gt; &quot;logstash-vmware-%&#123;+YYYY.MM.dd&#125;&quot;</span><br><span class="line">    &#125;</span><br><span class="line">#    stdout &#123; codec=&gt; rubydebug &#125;</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+<h5 id="3123-参考文件">3.1.2.3 参考文件</h5>
+<p><a href="https://blog.csdn.net/qq_34624315/article/details/83013531" target="_blank" rel="noopener">mutate基本用法</a></p>
+<p><a href="https://gist.github.com/vavikast/f74d90fd59f2db639bb01965527adaf7" target="_blank" rel="noopener">基本logstash配置文件参考</a></p>
+<p><a href="https://discuss.elastic.co/t/vmware-and-syslog/65479" target="_blank" rel="noopener">vmware and syslog</a></p>
+<p><a href="https://everythingshouldbevirtual.com/logstash-vcsa-6-0/" target="_blank" rel="noopener">logstash  VCSA6.0</a></p>
+<p><a href="https://www.elastic.co/guide/en/logstash/current/filter-plugins.html" target="_blank" rel="noopener">filter plugins</a></p>
+<h3 id="32-vcenter日志收集部分">3.2 Vcenter日志收集部分</h3>
+<h4 id="321-vcenter-syslog服务器配置">3.2.1 Vcenter-syslog服务器配置</h4>
+<p>​			主要是收集vcsa机器日志，方便进行安全日志分析；</p>
+<p>​			主要通过syslog进行日志收集，再通过ELK栈提供的logstash进行分析</p>
+<p>​			VCSA-Syslog–Logstash–Elasticsearch</p>
+<h5 id="3211-配置步骤">3.2.1.1 配置步骤</h5>
+<p>​	打开VCSA的管理后台URL: <a href="http://192.168.20.90:5480" target="_blank" rel="noopener">http://192.168.20.90:5480</a>，输入账号和密码（开机root和密码)–点击syslog配置中心，输入syslog配置信息。</p>
+<p><img src="https://i.loli.net/2019/12/05/O6ZjYzro4GnxWLI.png" alt="1575460227_1_.jpg"></p>
+<p><img src="https://i.loli.net/2019/12/05/KJ2akhibjDN9ZPE.png" alt="1575460311_1_.jpg"></p>
+<p><img src="https://i.loli.net/2019/12/05/xzRQkWn9dpVIgPi.png" alt="1575460358_1_.jpg"></p>
+<h5 id="3212-参考链接">3.2.1.2 参考链接</h5>
+<p><a href="%5Bhttps://techexpert.tips/zh-hans/vmware-zh-hans/vmware-esxi-syslog%E9%85%8D%E7%BD%AE/%5D(https://techexpert.tips/zh-hans/vmware-zh-hans/vmware-esxi-syslog%E9%85%8D%E7%BD%AE/)">Vmware Esxi syslog配置</a></p>
+<p><a href="https://www.virtuallyghetto.com/2017/12/can-the-vcsa-6-5-forward-to-multiple-syslog-targets.html" target="_blank" rel="noopener">VCSA 6.5 forward to multiple syslog</a></p>
+<p><a href="https://www.virtuallyghetto.com/2017/02/what-logs-do-i-get-when-i-enable-syslog-in-vcsa-6-5.html" target="_blank" rel="noopener">VCSA syslog</a></p>
+<h4 id="322-添加logstash-配置文件">3.2.2 添加logstash 配置文件</h4>
+<h5 id="3221-创建测试配置">3.2.2.1 创建测试配置</h5>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">input&#123;</span><br><span class="line">        udp &#123;</span><br><span class="line">        port =&gt; 1514</span><br><span class="line">        type =&gt; &quot;vcenter&quot;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &#123;</span><br><span class="line">    stdout &#123; codec=&gt; rubydebug &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="3222-选取一条日志进行分析调试">3.2.2.2 选取一条日志进行分析调试</h5>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;14&gt;1 2019-12-05T02:44:17.640474+00:00 photon-machine vpxd 4035 - -  Event [4184629] [1-1] [2019-12-05T02:44:00.017928Z] [vim.event.UserLoginSessionEvent] [info] [root] [Datacenter] [4184629] [User root@192.168.20.17 logged in as pyvmomi Python/3.6.8 (Linux; 3.10.0-957.el7.x86_64; x86_64)]\n</span><br></pre></td></tr></table></figure>
+<h5 id="3223-结合网上的综合案例对配置文件进行配置改造">3.2.2.3 结合网上的综合案例对配置文件进行配置改造。</h5>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">cat &gt; vcenter.conf &lt;&lt;EOF</span><br><span class="line">input&#123;</span><br><span class="line">        udp &#123;</span><br><span class="line">        port =&gt; 1514</span><br><span class="line">        type =&gt; &quot;vcenter&quot;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">filter &#123;</span><br><span class="line">  if &quot;vcenter&quot; in [type] &#123;</span><br><span class="line">    &#125;</span><br><span class="line">    grok &#123;</span><br><span class="line">      break_on_match =&gt; true</span><br><span class="line">      match =&gt; [</span><br><span class="line">        &quot;message&quot;, &quot;&lt;%&#123;NONNEGINT:syslog_pri&#125;&gt;%&#123;NONNEGINT:syslog_ver&#125; +(?:%&#123;TIMESTAMP_ISO8601:syslog_timestamp&#125;|-) +(?:%&#123;HOSTNAME:syslog_hostname&#125;|-) +(-|%&#123;SYSLOG5424PRINTASCII:syslog_program&#125;) +(-|%&#123;SYSLOG5424PRINTASCII:syslog_proc&#125;) +(-|%&#123;SYSLOG5424PRINTASCII:syslog_msgid&#125;) +(?:%&#123;SYSLOG5424SD:syslog_sd&#125;|-|) +%&#123;GREEDYDATA:syslog_msg&#125;&quot;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">    date &#123;</span><br><span class="line">         match =&gt; [ &quot;syslog_timestamp&quot;, &quot;YYYY-MM-ddHH:mm:ss,SSS&quot;, &quot;YYYY-MM-dd HH:mm:ss,SSS&quot;, &quot;ISO8601&quot; ]</span><br><span class="line">         #timezone =&gt; &quot;UTC&quot; #For vCenter Appliance</span><br><span class="line">         #timezone =&gt; &quot;Asia/Shanghai&quot;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">   mutate &#123;</span><br><span class="line">         remove_field =&gt; [&quot;syslog_ver&quot;, &quot;syslog_pri&quot;]</span><br><span class="line">                        &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">output &#123;</span><br><span class="line">    elasticsearch &#123;</span><br><span class="line">    hosts =&gt; &quot;192.168.20.18:9200&quot;  #elasticsearch服务地址</span><br><span class="line">    index =&gt; &quot;logstash-vcenter-%&#123;+YYYY.MM.dd&#125;&quot;</span><br><span class="line">    &#125;</span><br><span class="line">#    stdout &#123; codec=&gt; rubydebug &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+<h5 id="3224-参考文件">3.2.2.4 参考文件</h5>
+<p><a href="https://blog.csdn.net/qq_34624315/article/details/83013531" target="_blank" rel="noopener">mutate基本用法</a></p>
+<p><a href="https://gist.github.com/vavikast/f74d90fd59f2db639bb01965527adaf7" target="_blank" rel="noopener">基本logstash配置文件参考</a></p>
+<p><a href="https://discuss.elastic.co/t/vmware-and-syslog/65479" target="_blank" rel="noopener">vmware and syslog</a></p>
+<p><a href="https://everythingshouldbevirtual.com/logstash-vcsa-6-0/" target="_blank" rel="noopener">logstash  VCSA6.0</a></p>
+<h2 id="4-windows-server部分">4 Windows server部分</h2>
+<h3 id="41-windows-server日志收集部分">4.1 windows server日志收集部分</h3>
+<p>​				主要是收集AD域日志，方便进行安全日志分析；</p>
+<p>​			    主要通过ELK栈提供的winlogbeat进行收集</p>
+<p>​			    winlogbeat–logstash–elasticsearch</p>
+<h4 id="411-windows服务器配置">4.1.1 windows服务器配置</h4>
+<ul>
+<li>
+<h5 id="下载安装">下载安装</h5>
+<p>下载连接地址：<a href="https://www.elastic.co/cn/downloads/beats/winlogbeat" target="_blank" rel="noopener">https://www.elastic.co/cn/downloads/beats/winlogbeat</a></p>
+<p><img src="https://i.loli.net/2019/12/05/6VoPqRWOTt5CevQ.png" alt="1575529356_1_.jpg"></p>
+</li>
+<li>
+<h5 id="配置">配置：</h5>
+<p>将解压后的文件放到“C:\Program Files”，重命名为winlogbeat</p>
+<p><img src="https://i.loli.net/2019/12/05/uX7AjbDeJ8TISPC.png" alt="1575529614_1_.jpg"></p>
+</li>
+</ul>
+<ul>
+<li>
+<h5 id="安装">安装 ：</h5>
+<p>命令安装</p>
+<p><img src="https://i.loli.net/2019/12/05/hpxg19vrmujiJEc.png" alt="1575529682_1_.jpg"></p>
+</li>
+</ul>
+<ul>
+<li>
+<h5 id="编辑">编辑：</h5>
+<p>编辑winlogbeat.yml文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">winlogbeat.event_logs:</span><br><span class="line">  - name: Application</span><br><span class="line">  - name: Security</span><br><span class="line">  - name: System</span><br><span class="line"></span><br><span class="line">output.logstash:</span><br><span class="line">  enbaled: true</span><br><span class="line">  hosts: [&quot;192.168.20.18:5044&quot;]</span><br><span class="line"></span><br><span class="line">logging.to_files: true</span><br><span class="line">logging.files:</span><br><span class="line">  path: D:\ProgramData\winlogbeat\Logs</span><br><span class="line">logging.level: info</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li>
+<h5 id="测试配置文件">测试配置文件</h5>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PS C:\Program Files\Winlogbeat&gt; .\winlogbeat.exe test config -c .\winlogbeat.yml -e</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li>
+<h5 id="启动">启动：</h5>
+<p>启动winlogbeat</p>
+<p>powershell命令行启动：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PS C:\Program Files\Winlogbeat&gt; Start-Service winlogbeat</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<pre><code>powershell命令行关闭
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PS C:\Program Files\Winlogbeat&gt; Stop-Service winlogbeat</span><br></pre></td></tr></table></figure>
+</code></pre>
+<ul>
+<li>
+<h5 id="导入模板">导入模板</h5>
+<p>导入winlogindex模板,因为我们使用的logstash，所以需要手动导入。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PS &gt; .\winlogbeat.exe setup --index-management -E output.logstash.enabled=false -E &apos;output.elasticsearch.hosts=[&quot;192.168.20.18&quot;]&apos;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li>
+<h5 id="导入dashboard">导入dashboard</h5>
+<p>导入kibana-dashboard，因为我们使用的logstash，所以需要手动导入。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PS &gt; .\winlogbeat.exe setup -e  -E output.logstash.enabled=false   -E output.elasticsearch.hosts=[&apos;192.168.20.18:9200&apos;]   -E setup.kibana.host=192.168.20.18:5601</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="412-参考链接">4.1.2 参考链接</h4>
+<p>​	   <a href="https://bbs.ichunqiu.com/forum.php?mod=viewthread&amp;tid=20712&amp;highlight=elk" target="_blank" rel="noopener">windows 上winlogbeat安装</a></p>
+<p>​       <a href="https://s0www0elastic0co.icopy.site/guide/en/beats/winlogbeat/7.x/winlogbeat-configuration.html" target="_blank" rel="noopener">官方手册分析</a></p>
+<h3 id="42-添加logstash-配置文件">4.2 添加logstash 配置文件</h3>
+<h4 id="421-创建测试配置文件">4.2.1 创建测试配置文件</h4>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">cat  &gt; /data/config/test-windows.config &lt;&lt; EOF</span><br><span class="line">input &#123;</span><br><span class="line">  beats &#123;</span><br><span class="line">    port =&gt; 5044</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &#123;</span><br><span class="line">  stdout &#123; codec=&gt; rubydebug &#125;</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line">logstash -f test-windows.config</span><br></pre></td></tr></table></figure>
+<h4 id="422-创建配置文件">4.2.2  创建配置文件</h4>
+<p>创建正式配置文件，查看内容（因为已有模板，所以不错其他修改处理）</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">cat  &gt; /data/config/windows.config &lt;&lt; EOF</span><br><span class="line">input &#123;</span><br><span class="line">  beats &#123;</span><br><span class="line">    port =&gt; 5044</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &#123;</span><br><span class="line">  elasticsearch &#123;</span><br><span class="line">    hosts =&gt; [&quot;http:192.168.20.18:9200&quot;]</span><br><span class="line">    index =&gt; &quot;%&#123;[@metadata][beat]&#125;-%&#123;[@metadata][version]&#125;&quot; </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line">logstash -f windows.config</span><br></pre></td></tr></table></figure>
+<h4 id="423-参考文件">4.2.3 参考文件</h4>
+<p><a href="https://www.elastic.co/guide/en/logstash/current/plugins-inputs-beats.html" target="_blank" rel="noopener">beats input plugin</a></p>
+<h3 id="43查看discover">4.3查看Discover</h3>
+<p>​			因为已经winlogbeat是elk栈的标准模块，已经被定义，所以我们不再自行定义。</p>
+<p>​	        直接打开搜索winlogbaet*的index。</p>
+<p><img src="https://i.loli.net/2019/12/05/UkEhZTpN42o9gnv.png" alt="1575533728_1_.jpg"></p>
+<h3 id="44-查看dashboard">4.4 查看dashboard</h3>
+<p>​			因为已经winlogbeat是elk栈的标准模块，已经被定义，所以我们不再自行定义。</p>
+<p>​	        直接打开搜索winlogbaet*的dashboard</p>
+<p><img src="https://i.loli.net/2019/12/05/kUiDL8mV4ZjHPce.png" alt="1575533672_1_.jpg"></p>
+<p><img src="https://i.loli.net/2019/12/05/xtOaieJFTdCWBmV.png" alt="1575533606_1_.jpg"></p>
+<h2 id="5-linux-server部分">5 Linux server部分</h2>
+<h3 id="51-linux-系统日志收集部分">5.1 linux 系统日志收集部分</h3>
+<p>​	        主要是收集linux上的开关机日志，安全日志；</p>
+<p>​			主要通过ELK栈提供的filebeat进行收集</p>
+<p>​			 filebeat-filebeat-module–elasticsearch</p>
+<p>​	<img src="https://i.loli.net/2019/12/05/vlP1wUhpi7d6m4O.png" alt="1575546466_1_.jpg"></p>
+<h4 id="511-安装部署">5.1.1  安装部署</h4>
+<ul>
+<li>
+<h5 id="下载">下载</h5>
+<p>官网下载，连接地址：<a href="https://www.elastic.co/cn/downloads/beats/filebeat" target="_blank" rel="noopener">https://www.elastic.co/cn/downloads/beats/filebeat</a></p>
+<p><img src="https://i.loli.net/2019/12/05/aSlejqExJtLyQrb.png" alt="1575539230_1_.jpg"></p>
+</li>
+</ul>
+<ul>
+<li>
+<h5 id="安装">安装 ：</h5>
+<p>命令行安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.5.0-linux-x86_64.tar.gz</span><br><span class="line">tar xzvf filebeat-7.5.0-linux-x86_64.tar.gz</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li>
+<h5 id="查看布局">查看布局</h5>
+<p>查看filebeat目录布局</p>
+<p><img src="https://i.loli.net/2019/12/05/hzexyXouBJtOVkc.png" alt="image.png"></p>
+</li>
+</ul>
+<ul>
+<li>
+<h5 id="编辑">编辑：</h5>
+<p>编辑filebeat.yml文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">filebeat.inputs:</span><br><span class="line">- type: log</span><br><span class="line">  enabled: true</span><br><span class="line">  paths:</span><br><span class="line">    - /var/log/*.log</span><br><span class="line">    #- c:\programdata\elasticsearch\logs\*</span><br><span class="line">output.elasticsearch:</span><br><span class="line">  hosts: [&quot;192.168.20.18:9200&quot;]</span><br><span class="line">setup.kibana:</span><br><span class="line">  host: &quot;192.168.20.18:5601&quot;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li>
+<h5 id="启动">启动：</h5>
+<p>运行filebeat文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">filebeat  -c filebeat.yml -e</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="512-参考链接">5.1.2 参考链接</h4>
+<p><a href="https://bbs.ichunqiu.com/forum.php?mod=viewthread&amp;tid=20712&amp;highlight=elk" target="_blank" rel="noopener">windows 上winlogbeat安装</a></p>
+<p><a href="https://s0www0elastic0co.icopy.site/guide/en/beats/winlogbeat/7.x/winlogbeat-configuration.html" target="_blank" rel="noopener">官方手册分析</a></p>
+<h3 id="52-修改filebeat配置文件">5.2 修改filebeat配置文件</h3>
+<h4 id="521索引名称">5.2.1索引名称</h4>
+<p>关闭ilm声明周期管理</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setup.ilm.enabled: false</span><br></pre></td></tr></table></figure>
+<p>更改索引名称</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">setup.template.overwrite: true</span><br><span class="line">output.elasticsearch.index: &quot;systemlog-7.3.0-%&#123;+yyyy.MM.dd&#125;&quot;</span><br><span class="line">setup.template.name: &quot;systemlog&quot;</span><br><span class="line">setup.template.pattern: &quot;systemlog-*&quot;</span><br><span class="line">setup.template.enabled: false</span><br></pre></td></tr></table></figure>
+<p>修改预先构建的kibana仪表盘</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setup.dashboards.index: &quot;systemlog-*&quot;</span><br></pre></td></tr></table></figure>
+<h4 id="521-开启system模块">5.2.1 开启system模块</h4>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">./filebeat modules enable system</span><br><span class="line">./filebeat modules list</span><br></pre></td></tr></table></figure>
+<h4 id="523-重新初始化环境">5.2.3 重新初始化环境</h4>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./filebeat setup --template -e -c  filebeat.yml</span><br></pre></td></tr></table></figure>
+<h4 id="524-配置模块修改配置文件">5.2.4 配置模块，修改配置文件</h4>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">filebeat.modules:</span><br><span class="line">- module: system</span><br><span class="line">  syslog:</span><br><span class="line">    enabled: true</span><br><span class="line">	#默认位置/var/log/messages* /var/log/syslog*</span><br><span class="line">  auth:</span><br><span class="line">    enabled: true</span><br><span class="line">	#默认位置/var/log/auth.log*  /var/log/secure*</span><br><span class="line">output.elasticsearch:</span><br><span class="line">  hosts: [&quot;192.168.20.18:9200&quot;]</span><br><span class="line">setup.kibana:</span><br><span class="line">  host: &quot;192.168.20.18:5601&quot;</span><br></pre></td></tr></table></figure>
+<h4 id="525-重新启动filebeats初始化模块">5.2.5 重新启动filebeats，初始化模块</h4>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./filebeat setup --index-management -e -c  filebeat.yml</span><br></pre></td></tr></table></figure>
+<h4 id="526-参考文件">5.2.6 参考文件</h4>
+<p><a href="https://www.elastic.co/guide/en/logstash/current/plugins-inputs-beats.html" target="_blank" rel="noopener">beats input plugin</a></p>
+<p><a href="https://www.cnblogs.com/cjsblog/p/9495024.html" target="_blank" rel="noopener">filebeat模块与配置</a></p>
+<p><a href="https://s0www0elastic0co.icopy.site/guide/en/beats/filebeat/current/filebeat-module-system.html" target="_blank" rel="noopener">system module</a></p>
+<h4 id="53-创建index-patterns">5.3 创建index-patterns</h4>
+<p>management–kibana-index patterns-Create index pattern</p>
+<p><img src="https://i.loli.net/2019/12/12/qSYCVewgs5ydtZn.png" alt="image.png"></p>
+<p><img src="https://i.loli.net/2019/12/12/4vEtNfbHDSLZT2l.png" alt="image.png"></p>
+<h4 id="54查看discover">5.4查看discover</h4>
+<p><img src="https://i.loli.net/2019/12/05/N9laMESCiQZxHkn.png" alt="1575548396_1_.jpg"></p>
+<h4 id="54-查看dashboard">5.4 查看dashboard</h4>
+<p><img src="https://i.loli.net/2019/12/05/mgGSpJY5wvhAtDr.png" alt="image.png"></p>
+<h2 id="6-整合logstash配置">6 整合logstash配置</h2>
+<h3 id="61-整合logstash配置文件">6.1 整合logstash配置文件</h3>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br></pre></td><td class="code"><pre><span class="line">input&#123;</span><br><span class="line">  udp &#123;</span><br><span class="line">    port =&gt; 516</span><br><span class="line">    type =&gt; &quot;h3c&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">input&#123;</span><br><span class="line">  udp &#123;</span><br><span class="line">    port =&gt; 518</span><br><span class="line">    type =&gt; &quot;hillstone&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">input&#123;</span><br><span class="line">  udp &#123;</span><br><span class="line">    port =&gt; 514</span><br><span class="line">    type =&gt; &quot;vmware&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">input&#123;</span><br><span class="line">  udp &#123;</span><br><span class="line">    port =&gt; 1514</span><br><span class="line">    type =&gt; &quot;vcenter&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">input &#123;</span><br><span class="line">  beats &#123;</span><br><span class="line">    port =&gt; 5044</span><br><span class="line">    type =&gt; &quot;windows&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">filter &#123;</span><br><span class="line">  if [type] == &quot;hillstone&quot; &#123;</span><br><span class="line">  grok &#123;</span><br><span class="line">    match =&gt; &#123; &quot;message&quot; =&gt; &quot;\&lt;%&#123;BASE10NUM:syslog_pri&#125;\&gt;%&#123;SYSLOGTIMESTAMP:timestamp&#125;\ %&#123;BASE10NUM:serial&#125;\(%&#123;WORD:ROOT&#125;\) %&#123;DATA:logid&#125;\ %&#123;DATA:Sort&#125;@%&#123;DATA:Class&#125;\: %&#123;DATA:module&#125;\: %&#123;IPV4:srcip&#125;\:%&#123;BASE10NUM:srcport&#125;-&gt;%&#123;IPV4:dstip&#125;:%&#123;WORD:dstport&#125;\(%&#123;DATA:protocol&#125;\), application %&#123;USER:app&#125;\, interface %&#123;DATA:interface&#125;\, vr %&#123;USER:vr&#125;\, policy %&#123;DATA:policy&#125;\, user %&#123;USERNAME:user&#125;\@%&#123;DATA:AAAserver&#125;\, host %&#123;USER:HOST&#125;\, send packets %&#123;BASE10NUM:sendPackets&#125;\,send bytes %&#123;BASE10NUM:sendBytes&#125;\,receive packets %&#123;BASE10NUM:receivePackets&#125;\,receive bytes %&#123;BASE10NUM:receiveBytes&#125;\,start time %&#123;TIMESTAMP_ISO8601:startTime&#125;\,close time %&#123;TIMESTAMP_ISO8601:closeTime&#125;\,session %&#123;WORD:state&#125;\,%&#123;GREEDYDATA:reason&#125;&quot;&#125;</span><br><span class="line">    match =&gt; &#123; &quot;message&quot; =&gt; &quot;\&lt;%&#123;BASE10NUM:syslog_pri&#125;\&gt;%&#123;SYSLOGTIMESTAMP:timestamp&#125;\ %&#123;BASE10NUM:serial&#125;\(%&#123;WORD:ROOT&#125;\) %&#123;DATA:logid&#125;\ %&#123;DATA:Sort&#125;@%&#123;DATA:Class&#125;\: %&#123;DATA:module&#125;\: %&#123;IPV4:srcip&#125;\:%&#123;BASE10NUM:srcport&#125;-&gt;%&#123;IPV4:dstip&#125;:%&#123;WORD:dstport&#125;\(%&#123;DATA:protocol&#125;\), interface %&#123;DATA:interface&#125;\, vr %&#123;DATA:vr&#125;\, policy %&#123;DATA:policy&#125;\, user %&#123;USERNAME:user&#125;\@%&#123;DATA:AAAserver&#125;\, host %&#123;USER:HOST&#125;\, session %&#123;WORD:state&#125;%&#123;GREEDYDATA:reason&#125;&quot;&#125;</span><br><span class="line">    match =&gt; &#123; &quot;message&quot; =&gt; &quot;\&lt;%&#123;BASE10NUM:syslog_pri&#125;\&gt;%&#123;SYSLOGTIMESTAMP:timestamp&#125;\ %&#123;BASE10NUM:serial&#125;\(%&#123;WORD:ROOT&#125;\) %&#123;DATA:logid&#125;\ %&#123;DATA:Sort&#125;@%&#123;DATA:Class&#125;\: %&#123;DATA:module&#125;\: %&#123;IPV4:srcip&#125;\:%&#123;BASE10NUM:srcport&#125;-&gt;%&#123;IPV4:dstip&#125;:%&#123;WORD:dstport&#125;\(%&#123;DATA:protocol&#125;\), %&#123;WORD:state&#125; to %&#123;IPV4:snatip&#125;\:%&#123;BASE10NUM:snatport&#125;\, vr\ %&#123;DATA:vr&#125;\, user\ %&#123;USERNAME:user&#125;\@%&#123;DATA:AAAserver&#125;\, host\ %&#123;DATA:HOST&#125;\, rule\ %&#123;BASE10NUM:rule&#125;&quot;&#125;                                                                                                                                                         match =&gt; &#123; &quot;message&quot; =&gt; &quot;\&lt;%&#123;BASE10NUM:syslog_pri&#125;\&gt;%&#123;SYSLOGTIMESTAMP:timestamp&#125;\ %&#123;BASE10NUM:serial&#125;\(%&#123;WORD:ROOT&#125;\) %&#123;DATA:logid&#125;\ %&#123;DATA:Sort&#125;@%&#123;DATA:Class&#125;\: %&#123;DATA:module&#125;\: %&#123;IPV4:srcip&#125;\:%&#123;BASE10NUM:srcport&#125;-&gt;%&#123;IPV4:dstip&#125;:%&#123;WORD:dstport&#125;\(%&#123;DATA:protocol&#125;\), %&#123;WORD:state&#125; to %&#123;IPV4:dnatip&#125;\:%&#123;BASE10NUM:dnatport&#125;\, vr\ %&#123;DATA:vr&#125;\, user\ %&#123;USERNAME:user&#125;\@%&#123;DATA:AAAserver&#125;\, host\ %&#123;DATA:HOST&#125;\, rule\ %&#123;BASE10NUM:rule&#125;&quot;&#125;</span><br><span class="line">&#125;</span><br><span class="line">  mutate &#123;</span><br><span class="line">  lowercase =&gt; [ &quot;module&quot; ]</span><br><span class="line">  remove_field =&gt; [&quot;host&quot;, &quot;message&quot;, &quot;ROOT&quot;, &quot;HOST&quot;, &quot;serial&quot;, &quot;syslog_pri&quot;, &quot;timestamp&quot;, &quot;mac&quot;, &quot;AAAserver&quot;, &quot;user&quot;]</span><br><span class="line">&#125;</span><br><span class="line">  &#125;</span><br><span class="line">  if [type] == &quot;h3c&quot; &#123;</span><br><span class="line">    grok &#123;</span><br><span class="line">      match =&gt; &#123; &quot;message&quot; =&gt; &quot;\&lt;%&#123;BASE10NUM:syslog_pri&#125;\&gt;%&#123;SYSLOGTIMESTAMP:timestamp&#125;\ %&#123;DATA:year&#125; %&#123;DATA:hostname&#125; \%\%%&#123;DATA:ddModuleName&#125;\/%&#123;POSINT:severity&#125;\/%&#123;DATA:brief&#125;\: %&#123;GREEDYDATA:reason&#125;&quot; &#125;</span><br><span class="line">    add_field =&gt; &#123;&quot;severity_code&quot; =&gt; &quot;%&#123;severity&#125;&quot;&#125;</span><br><span class="line">&#125;</span><br><span class="line">  mutate &#123;</span><br><span class="line">    gsub =&gt; [</span><br><span class="line">  &quot;severity&quot;, &quot;0&quot;, &quot;Emergency&quot;,</span><br><span class="line">  &quot;severity&quot;, &quot;1&quot;, &quot;Alert&quot;,</span><br><span class="line">  &quot;severity&quot;, &quot;2&quot;, &quot;Critical&quot;,</span><br><span class="line">  &quot;severity&quot;, &quot;3&quot;, &quot;Error&quot;,</span><br><span class="line">  &quot;severity&quot;, &quot;4&quot;, &quot;Warning&quot;,</span><br><span class="line">  &quot;severity&quot;, &quot;5&quot;, &quot;Notice&quot;,</span><br><span class="line">  &quot;severity&quot;, &quot;6&quot;, &quot;Informational&quot;,</span><br><span class="line">  &quot;severity&quot;, &quot;7&quot;, &quot;Debug&quot;</span><br><span class="line">]</span><br><span class="line">    remove_field =&gt; [&quot;message&quot;, &quot;syslog_pri&quot;]</span><br><span class="line">&#125;</span><br><span class="line">  &#125;</span><br><span class="line">  if [type] == &quot;vmware&quot; &#123;</span><br><span class="line">  grok &#123;</span><br><span class="line">  break_on_match =&gt; true</span><br><span class="line">  match =&gt; [</span><br><span class="line">  &quot;message&quot;, &quot;&lt;%&#123;POSINT:syslog_pri&#125;&gt;%&#123;TIMESTAMP_ISO8601:syslog_timestamp&#125; %&#123;SYSLOGHOST:syslog_hostname&#125; %&#123;SYSLOGPROG:syslog_program&#125;: (?&lt;message-body&gt;(?&lt;message_system_info&gt;(?:\[%&#123;DATA:message_thread_id&#125; %&#123;DATA:syslog_level&#125; \&apos;%&#123;DATA:message_service&#125;\&apos;\ ?%&#123;DATA:message_opID&#125;])) \[%&#123;DATA:message_service_info&#125;]\ (?&lt;syslog_message&gt;(%&#123;GREEDYDATA&#125;)))&quot;,</span><br><span class="line">  &quot;message&quot;, &quot;&lt;%&#123;POSINT:syslog_pri&#125;&gt;%&#123;TIMESTAMP_ISO8601:syslog_timestamp&#125; %&#123;SYSLOGHOST:syslog_hostname&#125; %&#123;SYSLOGPROG:syslog_program&#125;: (?&lt;message-body&gt;(?&lt;message_system_info&gt;(?:\[%&#123;DATA:message_thread_id&#125; %&#123;DATA:syslog_level&#125; \&apos;%&#123;DATA:message_service&#125;\&apos;\ ?%&#123;DATA:message_opID&#125;])) (?&lt;syslog_message&gt;(%&#123;GREEDYDATA&#125;)))&quot;,</span><br><span class="line">  &quot;message&quot;, &quot;&lt;%&#123;POSINT:syslog_pri&#125;&gt;%&#123;TIMESTAMP_ISO8601:syslog_timestamp&#125; %&#123;SYSLOGHOST:syslog_hostname&#125; %&#123;SYSLOGPROG:syslog_program&#125;: %&#123;GREEDYDATA:syslog_message&#125;&quot;</span><br><span class="line">]</span><br><span class="line">&#125;</span><br><span class="line">  date &#123;</span><br><span class="line">  match =&gt; [ &quot;syslog_timestamp&quot;, &quot;YYYY-MM-ddHH:mm:ss&quot;, &quot;ISO8601&quot; ]</span><br><span class="line">&#125;</span><br><span class="line">  mutate &#123;</span><br><span class="line">  replace =&gt; [ &quot;@source_host&quot;, &quot;%&#123;syslog_hostname&#125;&quot; ]</span><br><span class="line">&#125;</span><br><span class="line">  mutate &#123;</span><br><span class="line">  replace =&gt; [ &quot;@message&quot;, &quot;%&#123;syslog_message&#125;&quot; ]</span><br><span class="line">&#125;</span><br><span class="line">  mutate &#123;</span><br><span class="line">  remove_field =&gt; [&quot;@source_host&quot;,&quot;program&quot;,&quot;syslog_hostname&quot;,&quot;@message&quot;]</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">  if [type] == &quot;vcenter&quot; &#123;</span><br><span class="line">  grok &#123;</span><br><span class="line">  break_on_match =&gt; true</span><br><span class="line">  match =&gt; [</span><br><span class="line">  &quot;message&quot;, &quot;&lt;%&#123;NONNEGINT:syslog_pri&#125;&gt;%&#123;NONNEGINT:syslog_ver&#125; +(?:%&#123;TIMESTAMP_ISO8601:syslog_timestamp&#125;|-) +(?:%&#123;HOSTNAME:syslog_hostname&#125;|-) +(-|%&#123;SYSLOG5424PRINTASCII:syslog_program&#125;) +(-|%&#123;SYSLOG5424PRINTASCII:syslog_proc&#125;) +(-|%&#123;SYSLOG5424PRINTASCII:syslog_msgid&#125;) +(?:%&#123;SYSLOG5424SD:syslog_sd&#125;|-|) +%&#123;GREEDYDATA:syslog_msg&#125;&quot;</span><br><span class="line">]</span><br><span class="line">&#125;</span><br><span class="line">  date &#123;</span><br><span class="line">  match =&gt; [ &quot;syslog_timestamp&quot;, &quot;YYYY-MM-ddHH:mm:ss,SSS&quot;, &quot;YYYY-MM-dd HH:mm:ss,SSS&quot;, &quot;ISO8601&quot; ]</span><br><span class="line">&#125;</span><br><span class="line">  mutate &#123;</span><br><span class="line">  remove_field =&gt; [&quot;syslog_ver&quot;, &quot;syslog_pri&quot;]</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">output &#123;</span><br><span class="line">  if [type] == &quot;hillstone&quot; &#123;</span><br><span class="line">  elasticsearch &#123;</span><br><span class="line">    hosts =&gt; &quot;192.168.20.18:9200&quot;</span><br><span class="line">    index =&gt; &quot;hillstone-%&#123;module&#125;-%&#123;+YYYY.MM.dd&#125;&quot;</span><br><span class="line">&#125;</span><br><span class="line">  &#125;</span><br><span class="line">  if [type] == &quot;h3c&quot; &#123;</span><br><span class="line">  elasticsearch &#123;</span><br><span class="line">    hosts =&gt; &quot;192.168.20.18:9200&quot;</span><br><span class="line">    index =&gt; &quot;h3c-%&#123;+YYYY.MM.dd&#125;&quot;</span><br><span class="line">&#125;</span><br><span class="line">  &#125;</span><br><span class="line">  if [type] == &quot;vmware&quot; &#123;</span><br><span class="line">  elasticsearch &#123;</span><br><span class="line">    hosts =&gt; &quot;192.168.20.18:9200&quot;</span><br><span class="line">    index =&gt; &quot;vmware-%&#123;+YYYY.MM.dd&#125;&quot;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">  if [type] == &quot;vcenter&quot; &#123;</span><br><span class="line">  elasticsearch &#123;</span><br><span class="line">    hosts =&gt; &quot;192.168.20.18:9200&quot;</span><br><span class="line">    index =&gt; &quot;vcenter-%&#123;+YYYY.MM.dd&#125;&quot;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">  if [type] == &quot;windows&quot; &#123;</span><br><span class="line">  elasticsearch &#123;</span><br><span class="line">    hosts =&gt; &quot;192.168.20.18:9200&quot;</span><br><span class="line">    index =&gt; &quot;%&#123;[@metadata][beat]&#125;-%&#123;[@metadata][version]&#125;&quot;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="62-配置logstash服务">6.2 配置logstash服务</h3>
+<p>启动logstash服务，并把mix.config 更改为logstash.conf  ,放到/etc/logstash 目录下。</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl enable logstash</span><br><span class="line">systemc	start logstash</span><br></pre></td></tr></table></figure>
+<h5 id="未完待续">未完待续</h5>
+<h3 id="推荐查看英文文档方式">推荐查看英文文档方式</h3>
+<p>找到一篇英文站点，将鼠标移动到url开始，添加icopy.site/回车。</p>
+<p>​		“icopy.site/”+“<a href="https://www.elastic.co" target="_blank" rel="noopener">https://www.elastic.co</a>”</p>
+<p>例如 ： 源网址：<a href="https://www.elastic.co/guide/en/logstash/current/plugins-filters-grok.html" target="_blank" rel="noopener">https://www.elastic.co/guide/en/logstash/current/plugins-filters-grok.html</a></p>
+<p>​			转译后网址：<a href="https://s0www0elastic0co.icopy.site/guide/en/logstash/current/plugins-filters-grok.html" target="_blank" rel="noopener">https://s0www0elastic0co.icopy.site/guide/en/logstash/current/plugins-filters-grok.html</a></p>
+<p>推荐理由：</p>
+<p>​		1.比谷歌全文翻译更准确，而且关键代码不翻译。</p>
+<p>​		2.如果你英文不好，或者看英文文档太累，可以试下哦。</p>
+<p>​		推荐学习视频：</p>
+<p>​		<a href="https://www.bilibili.com/video/av77345745?p=115" target="_blank" rel="noopener">ELK入门到实践</a></p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/Python多页签自动化登录/" data-toggle="tooltip" data-placement="top" title="Python多页签自动化登录">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/记openvpn客户端安装遇到问题/" data-toggle="tooltip" data-placement="top" title="记openvpn客户端安装遇到问题">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                <!--分享-->
+                
+                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                    <!--  css & js -->
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!--分享-->
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    <style>
+      span.toc-nav-number{
+        display: none
+      }
+    </style>
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#搭建办公环境elasticsearch-日志分析系统"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">&#x642D;&#x5EFA;&#x529E;&#x516C;&#x73AF;&#x5883;ElasticSearch &#x65E5;&#x5FD7;&#x5206;&#x6790;&#x7CFB;&#x7EDF;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-hillstone部分"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">1 Hillstone&#x90E8;&#x5206;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#11-hillstone配置"><span class="toc-nav-number">1.1.1.</span> <span class="toc-nav-text">1.1 Hillstone&#x914D;&#x7F6E;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#111-配置步骤"><span class="toc-nav-number">1.1.1.1.</span> <span class="toc-nav-text">1.1.1 &#x914D;&#x7F6E;&#x6B65;&#x9AA4;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#112-参考链接"><span class="toc-nav-number">1.1.1.2.</span> <span class="toc-nav-text">1.1.2 &#x53C2;&#x8003;&#x94FE;&#x63A5;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#12-添加logstash-配置文件"><span class="toc-nav-number">1.1.2.</span> <span class="toc-nav-text">1.2 &#x6DFB;&#x52A0;logstash &#x914D;&#x7F6E;&#x6587;&#x4EF6;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#121-创建配置测试文件"><span class="toc-nav-number">1.1.2.1.</span> <span class="toc-nav-text">1.2.1  &#x521B;&#x5EFA;&#x914D;&#x7F6E;&#x6D4B;&#x8BD5;&#x6587;&#x4EF6;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#122-选取其中一条日志进行分析调试"><span class="toc-nav-number">1.1.2.2.</span> <span class="toc-nav-text">1.2.2  &#x9009;&#x53D6;&#x5176;&#x4E2D;&#x4E00;&#x6761;&#x65E5;&#x5FD7;&#x8FDB;&#x884C;&#x5206;&#x6790;&#x8C03;&#x8BD5;&#x3002;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#123logstash分析说明"><span class="toc-nav-number">1.1.2.3.</span> <span class="toc-nav-text">1.2.3Logstash&#x5206;&#x6790;&#x8BF4;&#x660E;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#124-logstash综合配置"><span class="toc-nav-number">1.1.2.4.</span> <span class="toc-nav-text">1.2.4  Logstash&#x7EFC;&#x5408;&#x914D;&#x7F6E;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#3123-参考文件"><span class="toc-nav-number">1.1.2.4.1.</span> <span class="toc-nav-text">3.1.2.3 &#x53C2;&#x8003;&#x6587;&#x4EF6;</span></a></li></ol></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-h3c交换机部分"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">2 H3C&#x4EA4;&#x6362;&#x673A;&#x90E8;&#x5206;</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#21-h3c-syslog转发"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">2.1 H3C Syslog&#x8F6C;&#x53D1;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#211-h3c交换机配置"><span class="toc-nav-number">1.3.0.1.</span> <span class="toc-nav-text">2.1.1 H3C&#x4EA4;&#x6362;&#x673A;&#x914D;&#x7F6E;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#212-参考链接"><span class="toc-nav-number">1.3.0.2.</span> <span class="toc-nav-text">2.1.2 &#x53C2;&#x8003;&#x94FE;&#x63A5;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#22-添加logstash-配置文件"><span class="toc-nav-number">1.3.1.</span> <span class="toc-nav-text">2.2 &#x6DFB;&#x52A0;logstash &#x914D;&#x7F6E;&#x6587;&#x4EF6;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#221-创建配置测试文件"><span class="toc-nav-number">1.3.1.1.</span> <span class="toc-nav-text">2.2.1  &#x521B;&#x5EFA;&#x914D;&#x7F6E;&#x6D4B;&#x8BD5;&#x6587;&#x4EF6;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#222-选取一条日志进行分析调试"><span class="toc-nav-number">1.3.1.2.</span> <span class="toc-nav-text">2.2.2 &#x9009;&#x53D6;&#x4E00;&#x6761;&#x65E5;&#x5FD7;&#x8FDB;&#x884C;&#x5206;&#x6790;&#x8C03;&#x8BD5;&#x3002;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#223-mutate基本用法说明"><span class="toc-nav-number">1.3.1.3.</span> <span class="toc-nav-text">2.2.3 mutate&#x57FA;&#x672C;&#x7528;&#x6CD5;&#x8BF4;&#x660E;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#224-综合配置"><span class="toc-nav-number">1.3.1.4.</span> <span class="toc-nav-text">2.2.4 &#x7EFC;&#x5408;&#x914D;&#x7F6E;&#x3002;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#225-参考文件"><span class="toc-nav-number">1.3.1.5.</span> <span class="toc-nav-text">2.2.5 &#x53C2;&#x8003;&#x6587;&#x4EF6;</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-vmware部分"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">3 Vmware&#x90E8;&#x5206;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#31-esxi日志收集部分"><span class="toc-nav-number">1.4.1.</span> <span class="toc-nav-text">3.1 Esxi&#x65E5;&#x5FD7;&#x6536;&#x96C6;&#x90E8;&#x5206;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#311-esxi机器syslog服务器配置"><span class="toc-nav-number">1.4.1.1.</span> <span class="toc-nav-text">3.1.1 Esxi&#x673A;&#x5668;syslog&#x670D;&#x52A1;&#x5668;&#x914D;&#x7F6E;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#3111-配置步骤"><span class="toc-nav-number">1.4.1.1.1.</span> <span class="toc-nav-text">3.1.1.1 &#x914D;&#x7F6E;&#x6B65;&#x9AA4;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#3112-参考链接"><span class="toc-nav-number">1.4.1.1.2.</span> <span class="toc-nav-text">3.1.1.2 &#x53C2;&#x8003;&#x94FE;&#x63A5;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#312-添加logstash-配置文件"><span class="toc-nav-number">1.4.1.2.</span> <span class="toc-nav-text">3.1.2 &#x6DFB;&#x52A0;logstash &#x914D;&#x7F6E;&#x6587;&#x4EF6;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#3121-创建配置测试文件"><span class="toc-nav-number">1.4.1.2.1.</span> <span class="toc-nav-text">3.1.2.1 &#x521B;&#x5EFA;&#x914D;&#x7F6E;&#x6D4B;&#x8BD5;&#x6587;&#x4EF6;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#3122-选取其中一条日志进行分析调试"><span class="toc-nav-number">1.4.1.2.2.</span> <span class="toc-nav-text">3.1.2.2 &#x9009;&#x53D6;&#x5176;&#x4E2D;&#x4E00;&#x6761;&#x65E5;&#x5FD7;&#x8FDB;&#x884C;&#x5206;&#x6790;&#x8C03;&#x8BD5;&#x3002;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#3123-结合网上的综合案例对测试文件进行配置改造"><span class="toc-nav-number">1.4.1.2.3.</span> <span class="toc-nav-text">3.1.2.3 &#x7ED3;&#x5408;&#x7F51;&#x4E0A;&#x7684;&#x7EFC;&#x5408;&#x6848;&#x4F8B;&#x5BF9;&#x6D4B;&#x8BD5;&#x6587;&#x4EF6;&#x8FDB;&#x884C;&#x914D;&#x7F6E;&#x6539;&#x9020;&#x3002;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#3123-参考文件"><span class="toc-nav-number">1.4.1.2.4.</span> <span class="toc-nav-text">3.1.2.3 &#x53C2;&#x8003;&#x6587;&#x4EF6;</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#32-vcenter日志收集部分"><span class="toc-nav-number">1.4.2.</span> <span class="toc-nav-text">3.2 Vcenter&#x65E5;&#x5FD7;&#x6536;&#x96C6;&#x90E8;&#x5206;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#321-vcenter-syslog服务器配置"><span class="toc-nav-number">1.4.2.1.</span> <span class="toc-nav-text">3.2.1 Vcenter-syslog&#x670D;&#x52A1;&#x5668;&#x914D;&#x7F6E;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#3211-配置步骤"><span class="toc-nav-number">1.4.2.1.1.</span> <span class="toc-nav-text">3.2.1.1 &#x914D;&#x7F6E;&#x6B65;&#x9AA4;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#3212-参考链接"><span class="toc-nav-number">1.4.2.1.2.</span> <span class="toc-nav-text">3.2.1.2 &#x53C2;&#x8003;&#x94FE;&#x63A5;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#322-添加logstash-配置文件"><span class="toc-nav-number">1.4.2.2.</span> <span class="toc-nav-text">3.2.2 &#x6DFB;&#x52A0;logstash &#x914D;&#x7F6E;&#x6587;&#x4EF6;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#3221-创建测试配置"><span class="toc-nav-number">1.4.2.2.1.</span> <span class="toc-nav-text">3.2.2.1 &#x521B;&#x5EFA;&#x6D4B;&#x8BD5;&#x914D;&#x7F6E;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#3222-选取一条日志进行分析调试"><span class="toc-nav-number">1.4.2.2.2.</span> <span class="toc-nav-text">3.2.2.2 &#x9009;&#x53D6;&#x4E00;&#x6761;&#x65E5;&#x5FD7;&#x8FDB;&#x884C;&#x5206;&#x6790;&#x8C03;&#x8BD5;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#3223-结合网上的综合案例对配置文件进行配置改造"><span class="toc-nav-number">1.4.2.2.3.</span> <span class="toc-nav-text">3.2.2.3 &#x7ED3;&#x5408;&#x7F51;&#x4E0A;&#x7684;&#x7EFC;&#x5408;&#x6848;&#x4F8B;&#x5BF9;&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#x8FDB;&#x884C;&#x914D;&#x7F6E;&#x6539;&#x9020;&#x3002;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#3224-参考文件"><span class="toc-nav-number">1.4.2.2.4.</span> <span class="toc-nav-text">3.2.2.4 &#x53C2;&#x8003;&#x6587;&#x4EF6;</span></a></li></ol></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-windows-server部分"><span class="toc-nav-number">1.5.</span> <span class="toc-nav-text">4 Windows server&#x90E8;&#x5206;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#41-windows-server日志收集部分"><span class="toc-nav-number">1.5.1.</span> <span class="toc-nav-text">4.1 windows server&#x65E5;&#x5FD7;&#x6536;&#x96C6;&#x90E8;&#x5206;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#411-windows服务器配置"><span class="toc-nav-number">1.5.1.1.</span> <span class="toc-nav-text">4.1.1 windows&#x670D;&#x52A1;&#x5668;&#x914D;&#x7F6E;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#下载安装"><span class="toc-nav-number">1.5.1.1.1.</span> <span class="toc-nav-text">&#x4E0B;&#x8F7D;&#x5B89;&#x88C5;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#配置"><span class="toc-nav-number">1.5.1.1.2.</span> <span class="toc-nav-text">&#x914D;&#x7F6E;&#xFF1A;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#安装"><span class="toc-nav-number">1.5.1.1.3.</span> <span class="toc-nav-text">&#x5B89;&#x88C5; &#xFF1A;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#编辑"><span class="toc-nav-number">1.5.1.1.4.</span> <span class="toc-nav-text">&#x7F16;&#x8F91;&#xFF1A;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#测试配置文件"><span class="toc-nav-number">1.5.1.1.5.</span> <span class="toc-nav-text">&#x6D4B;&#x8BD5;&#x914D;&#x7F6E;&#x6587;&#x4EF6;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#启动"><span class="toc-nav-number">1.5.1.1.6.</span> <span class="toc-nav-text">&#x542F;&#x52A8;&#xFF1A;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#导入模板"><span class="toc-nav-number">1.5.1.1.7.</span> <span class="toc-nav-text">&#x5BFC;&#x5165;&#x6A21;&#x677F;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#导入dashboard"><span class="toc-nav-number">1.5.1.1.8.</span> <span class="toc-nav-text">&#x5BFC;&#x5165;dashboard</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#412-参考链接"><span class="toc-nav-number">1.5.1.2.</span> <span class="toc-nav-text">4.1.2 &#x53C2;&#x8003;&#x94FE;&#x63A5;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#42-添加logstash-配置文件"><span class="toc-nav-number">1.5.2.</span> <span class="toc-nav-text">4.2 &#x6DFB;&#x52A0;logstash &#x914D;&#x7F6E;&#x6587;&#x4EF6;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#421-创建测试配置文件"><span class="toc-nav-number">1.5.2.1.</span> <span class="toc-nav-text">4.2.1 &#x521B;&#x5EFA;&#x6D4B;&#x8BD5;&#x914D;&#x7F6E;&#x6587;&#x4EF6;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#422-创建配置文件"><span class="toc-nav-number">1.5.2.2.</span> <span class="toc-nav-text">4.2.2  &#x521B;&#x5EFA;&#x914D;&#x7F6E;&#x6587;&#x4EF6;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#423-参考文件"><span class="toc-nav-number">1.5.2.3.</span> <span class="toc-nav-text">4.2.3 &#x53C2;&#x8003;&#x6587;&#x4EF6;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#43查看discover"><span class="toc-nav-number">1.5.3.</span> <span class="toc-nav-text">4.3&#x67E5;&#x770B;Discover</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#44-查看dashboard"><span class="toc-nav-number">1.5.4.</span> <span class="toc-nav-text">4.4 &#x67E5;&#x770B;dashboard</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-linux-server部分"><span class="toc-nav-number">1.6.</span> <span class="toc-nav-text">5 Linux server&#x90E8;&#x5206;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#51-linux-系统日志收集部分"><span class="toc-nav-number">1.6.1.</span> <span class="toc-nav-text">5.1 linux &#x7CFB;&#x7EDF;&#x65E5;&#x5FD7;&#x6536;&#x96C6;&#x90E8;&#x5206;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#511-安装部署"><span class="toc-nav-number">1.6.1.1.</span> <span class="toc-nav-text">5.1.1  &#x5B89;&#x88C5;&#x90E8;&#x7F72;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#下载"><span class="toc-nav-number">1.6.1.1.1.</span> <span class="toc-nav-text">&#x4E0B;&#x8F7D;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#安装"><span class="toc-nav-number">1.6.1.1.2.</span> <span class="toc-nav-text">&#x5B89;&#x88C5; &#xFF1A;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#查看布局"><span class="toc-nav-number">1.6.1.1.3.</span> <span class="toc-nav-text">&#x67E5;&#x770B;&#x5E03;&#x5C40;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#编辑"><span class="toc-nav-number">1.6.1.1.4.</span> <span class="toc-nav-text">&#x7F16;&#x8F91;&#xFF1A;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#启动"><span class="toc-nav-number">1.6.1.1.5.</span> <span class="toc-nav-text">&#x542F;&#x52A8;&#xFF1A;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#512-参考链接"><span class="toc-nav-number">1.6.1.2.</span> <span class="toc-nav-text">5.1.2 &#x53C2;&#x8003;&#x94FE;&#x63A5;</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#52-修改filebeat配置文件"><span class="toc-nav-number">1.6.2.</span> <span class="toc-nav-text">5.2 &#x4FEE;&#x6539;filebeat&#x914D;&#x7F6E;&#x6587;&#x4EF6;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#521索引名称"><span class="toc-nav-number">1.6.2.1.</span> <span class="toc-nav-text">5.2.1&#x7D22;&#x5F15;&#x540D;&#x79F0;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#521-开启system模块"><span class="toc-nav-number">1.6.2.2.</span> <span class="toc-nav-text">5.2.1 &#x5F00;&#x542F;system&#x6A21;&#x5757;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#523-重新初始化环境"><span class="toc-nav-number">1.6.2.3.</span> <span class="toc-nav-text">5.2.3 &#x91CD;&#x65B0;&#x521D;&#x59CB;&#x5316;&#x73AF;&#x5883;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#524-配置模块修改配置文件"><span class="toc-nav-number">1.6.2.4.</span> <span class="toc-nav-text">5.2.4 &#x914D;&#x7F6E;&#x6A21;&#x5757;&#xFF0C;&#x4FEE;&#x6539;&#x914D;&#x7F6E;&#x6587;&#x4EF6;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#525-重新启动filebeats初始化模块"><span class="toc-nav-number">1.6.2.5.</span> <span class="toc-nav-text">5.2.5 &#x91CD;&#x65B0;&#x542F;&#x52A8;filebeats&#xFF0C;&#x521D;&#x59CB;&#x5316;&#x6A21;&#x5757;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#526-参考文件"><span class="toc-nav-number">1.6.2.6.</span> <span class="toc-nav-text">5.2.6 &#x53C2;&#x8003;&#x6587;&#x4EF6;</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#53-创建index-patterns"><span class="toc-nav-number">1.6.2.7.</span> <span class="toc-nav-text">5.3 &#x521B;&#x5EFA;index-patterns</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#54查看discover"><span class="toc-nav-number">1.6.2.8.</span> <span class="toc-nav-text">5.4&#x67E5;&#x770B;discover</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#54-查看dashboard"><span class="toc-nav-number">1.6.2.9.</span> <span class="toc-nav-text">5.4 &#x67E5;&#x770B;dashboard</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#6-整合logstash配置"><span class="toc-nav-number">1.7.</span> <span class="toc-nav-text">6 &#x6574;&#x5408;logstash&#x914D;&#x7F6E;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#61-整合logstash配置文件"><span class="toc-nav-number">1.7.1.</span> <span class="toc-nav-text">6.1 &#x6574;&#x5408;logstash&#x914D;&#x7F6E;&#x6587;&#x4EF6;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#62-配置logstash服务"><span class="toc-nav-number">1.7.2.</span> <span class="toc-nav-text">6.2 &#x914D;&#x7F6E;logstash&#x670D;&#x52A1;</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#未完待续"><span class="toc-nav-number">1.7.2.0.1.</span> <span class="toc-nav-text">&#x672A;&#x5B8C;&#x5F85;&#x7EED;</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#推荐查看英文文档方式"><span class="toc-nav-number">1.7.3.</span> <span class="toc-nav-text">&#x63A8;&#x8350;&#x67E5;&#x770B;&#x82F1;&#x6587;&#x6587;&#x6863;&#x65B9;&#x5F0F;</span></a></li></ol></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#elasticsearch" title="elasticsearch">elasticsearch</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="https://blog.51cto.com/9406836" target="_blank">51cto  moakia</a></li>
+                    
+                        <li><a href="https://blog.51cto.com/9406836" target="_blank">51cto  moakia</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/vavikast">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; vavikast 2020 
+                    <br>
+                    Theme by <a href="http://beantech.org">BeanTech</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    re-Ported by <a href="http://www.vavikast.com">王伟</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=huweihuang&repo=hexo-theme-huweihuang&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://www.vavikast.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-XXXXXXXX-X';
+    var _gaDomain = 'yoursite';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'xxx';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="http://www.vavikast.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
