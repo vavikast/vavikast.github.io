@@ -7,6 +7,14 @@
     </url>
 
     <url>
+        <loc>http://www.vavikast.com/article/K8S-Helm-%E9%83%A8%E7%BD%B2-ELK-7-6/</loc>
+        <lastmod>2020-04-01T07:31:06.028Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>http://www.vavikast.com/article/%E6%90%AD%E5%BB%BA%E5%8A%9E%E5%85%AC%E7%8E%AF%E5%A2%83ElasticSearch%E6%97%A5%E5%BF%97%E5%88%86%E6%9E%90%E7%B3%BB%E7%BB%9F/</loc>
         <lastmod>2020-04-01T06:54:53.400Z</lastmod>
         <changefreq>weekly</changefreq>

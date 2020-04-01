@@ -37,13 +37,6 @@
     </url>
 
     <url>
-        <loc>http://www.vavikast.com/tags/kubernetes/</loc>
-        <lastmod>2019-07-10T04:48:18.227Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>http://www.vavikast.com/tags/etcd/</loc>
         <lastmod>2019-07-10T04:48:18.227Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -109,6 +102,27 @@
     <url>
         <loc>http://www.vavikast.com/tags/elasticsearch/</loc>
         <lastmod>2020-04-01T06:54:53.400Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://www.vavikast.com/tags/rook/</loc>
+        <lastmod>2020-04-01T07:31:06.028Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://www.vavikast.com/tags/elk/</loc>
+        <lastmod>2020-04-01T07:31:06.028Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://www.vavikast.com/tags/kubernetes/</loc>
+        <lastmod>2020-04-01T07:31:06.028Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
