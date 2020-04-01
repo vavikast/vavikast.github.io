@@ -1,19 +1,18 @@
 ---
-title: 'K8S : Helm 部署 ELK 7.6'
+title: 'K8S: Helm 部署 ELK 7.6'
 catalog: true
-date: 2020-04-01 15:07:42
+date: 2020-04-01 15:29:59
 subtitle:
 header-img: "/img/article_header/article_header.png"
 tags:
-- elk
 - rook
+- elk
 - kubernetes
 catagories:
-- elk
 - rook
+- elk
 - kubernetes
-updateDate: 2020-04-01 15:07:42
-​---
+updateDate: 2020-04-01 15:29:59
 ---
 
 ### 场景

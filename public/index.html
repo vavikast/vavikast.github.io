@@ -211,6 +211,45 @@
 
 <div class="post-preview">
 
+    <a href="/article/K8S-Helm-部署-ELK-7-6/">
+        <h2 class="post-title">
+                                 
+            K8S: Helm 部署 ELK 7.6
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            场景
+​		在 K8S 上部署有状态应用 ELK，收集日常测试数据的上报（应用拨测的 Heartbeat、调用链追踪的 APM、性能指标 metabeat 等）。本文通过rook提供底层存储，用于安装elk的statefulset，然后部署MetalLB实现本地负载均衡，最后通过ingress-control实现访问kibana。
+操作步骤
+
+1.安装rook
+2.安装helm
+3.安装ES......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by vavikast on
+            2020-04-01
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#rook" title="rook">rook</a>
+            
+              <a href="/tags/#elk" title="elk">elk</a>
+            
+              <a href="/tags/#kubernetes" title="kubernetes">kubernetes</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/article/基于Go博客wblog的理解和修改/">
         <h2 class="post-title">
                                  
@@ -459,9 +498,9 @@ mac系统上不支持crt证书，需要转换为pkcs12证书。
         </p>
         <div class="tags">
             
-              <a href="/tags/#cka" title="cka">cka</a>
-            
               <a href="/tags/#kubernetes" title="kubernetes">kubernetes</a>
+            
+              <a href="/tags/#cka" title="cka">cka</a>
             
         </div>
     
@@ -564,44 +603,6 @@ worker1
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/article/Prometheus系统下vmware-exporter配置/">
-        <h2 class="post-title">
-                                 
-            Prometheus系统下vmware_exporter配置
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            Prometheus系统下vmware_exporter配置
-为了方便管理设备，搞起了Prometheus。今天从vmware_exporter开始，监控起来我的vmware vsphere集群。
-
-vmware_exporter由于编译问题不成功，选择使用docker方式执行。vmware_exporter
-
-
-编辑配置文件config.yml
-为了配置prometheus的文件发现服务，......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by vavikast on
-            2019-07-09
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#prometheus" title="prometheus">prometheus</a>
-            
-              <a href="/tags/#vmware" title="vmware">vmware</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -643,14 +644,20 @@ vmware_exporter由于编译问题不成功，选择使用docker方式执行。vm
     <div class="tags">
         
             
+        
+            
+        
+            
+            <a href="/tags/#kubernetes" title="kubernetes" rel="5">kubernetes</a>
+            
+        
+            
             <a href="/tags/#prometheus" title="prometheus" rel="3">prometheus</a>
             
         
             
         
             
-            <a href="/tags/#kubernetes" title="kubernetes" rel="4">kubernetes</a>
-            
         
             
         
@@ -658,16 +665,6 @@ vmware_exporter由于编译问题不成功，选择使用docker方式执行。vm
         
             
         
-            
-        
-            
-        
-            
-        
-            
-        
-            
-            <a href="/tags/#openvpn" title="openvpn" rel="2">openvpn</a>
             
         
             
@@ -676,6 +673,14 @@ vmware_exporter由于编译问题不成功，选择使用docker方式执行。vm
         
             
             <a href="/tags/#etcd" title="etcd" rel="2">etcd</a>
+            
+        
+            
+        
+            
+            <a href="/tags/#openvpn" title="openvpn" rel="2">openvpn</a>
+            
+        
             
         
             
@@ -735,6 +740,10 @@ vmware_exporter由于编译问题不成功，选择使用docker方式执行。vm
     <ul>
       
         <li>
+          <a href="/article/K8S-Helm-部署-ELK-7-6/">K8S: Helm 部署 ELK 7.6</a>
+        </li>
+      
+        <li>
           <a href="/article/基于Go博客wblog的理解和修改/">基于Go博客wblog的理解和修改</a>
         </li>
       
@@ -748,10 +757,6 @@ vmware_exporter由于编译问题不成功，选择使用docker方式执行。vm
       
         <li>
           <a href="/article/记openvpn客户端安装遇到问题/">记openvpn客户端安装遇到问题</a>
-        </li>
-      
-        <li>
-          <a href="/article/Prometheus配置钉钉告警/">Prometheus配置钉钉告警</a>
         </li>
       
     </ul>
@@ -776,7 +781,7 @@ vmware_exporter由于编译问题不成功，选择使用docker方式执行。vm
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a><span class="archive-list-count">10</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a><span class="archive-list-count">10</span></li></ul>
     </div>
 
         <hr>
