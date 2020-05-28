@@ -1,16 +1,11 @@
 ---
 title: Golang使用selenium操作Chrome
 catalog: true
-date: 2020-05-28 19:15:55
+date: 2020-05-28 19:33:43
 subtitle:
 header-img: "/img/article_header/article_header.png"
 tags:
 - golang
-- selenium
-catagories:
-- golang
-updateDate: 2020-05-28 19:15:55
-​---
 ---
 
 ### Golang使用selenium操作Chrome
