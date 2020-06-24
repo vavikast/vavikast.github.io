@@ -134,14 +134,14 @@
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -208,6 +208,40 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/article/以注册mysql驱动举例init-函数的注册行为（golang）/">
+        <h2 class="post-title">
+                                 
+            以注册mysql驱动举例init()函数的注册行为（golang）
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            Go语言中的database/sql包提供了保证SQL或类SQL数据库的泛用接口，并不提供具体的数据库驱动。使用database/sql包时必须注入（至少）一个数据库驱动。
+​		但是import _ “github.com/go-sql-driver/mysql” 的意义不是很好理解。
+​		为此，我通过自己写的三个简单程序，演示init()的注册行为。
+​
+代码的目录组织结构如下：
+12......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by vavikast on
+            2020-06-24
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#go" title="go">go</a>
+            
+        </div>
+    
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -536,48 +570,6 @@ mac系统上不支持crt证书，需要转换为pkcs12证书。
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/article/CKA考试总结/">
-        <h2 class="post-title">
-                                 
-            CKA考试总结
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            CKA考试总结
-​        很高兴自己考过了CKA，准备了很长一段时间，总算有所回报。
-​        这次考试，花费了300$，预约的线上考试。最近看着华为云正在推广线下考试，只要一千多人民币，真是莫名心痛。先晒下证书缓解下。
-
-经验说明
-很多人已经分享过自己的经验，多的我就不说了，我只说我认为有用的。
-
-
-考试要求
-
-考试环境：要求安静无人，桌面干净。
-考试方式： 只使用chro......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by vavikast on
-            2019-07-10
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#kubernetes" title="kubernetes">kubernetes</a>
-            
-              <a href="/tags/#cka" title="cka">cka</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -586,7 +578,7 @@ mac系统上不支持crt证书，需要转换为pkcs12证书。
     
     
         <li class="next">
-            <a href="/archives/2/">Older Posts &rarr;</a>
+            <a href="/page/2/">Older Posts &rarr;</a>
         </li>
     
 </ul>
@@ -619,10 +611,6 @@ mac系统上不支持crt证书，需要转换为pkcs12证书。
     <div class="tags">
         
             
-            <a href="/tags/#prometheus" title="prometheus" rel="3">prometheus</a>
-            
-        
-            
         
             
             <a href="/tags/#kubernetes" title="kubernetes" rel="5">kubernetes</a>
@@ -631,7 +619,17 @@ mac系统上不支持crt证书，需要转换为pkcs12证书。
             
         
             
+        
+            
+        
+            
             <a href="/tags/#golang" title="golang" rel="3">golang</a>
+            
+        
+            
+        
+            
+            <a href="/tags/#prometheus" title="prometheus" rel="3">prometheus</a>
             
         
             
@@ -646,10 +644,6 @@ mac系统上不支持crt证书，需要转换为pkcs12证书。
         
             
             <a href="/tags/#etcd" title="etcd" rel="2">etcd</a>
-            
-        
-            
-        
             
         
             
@@ -717,6 +711,10 @@ mac系统上不支持crt证书，需要转换为pkcs12证书。
     <ul>
       
         <li>
+          <a href="/article/以注册mysql驱动举例init-函数的注册行为（golang）/">以注册mysql驱动举例init()函数的注册行为（golang）</a>
+        </li>
+      
+        <li>
           <a href="/article/Golang使用selenium操作Chrome/">Golang使用selenium操作Chrome</a>
         </li>
       
@@ -730,10 +728,6 @@ mac系统上不支持crt证书，需要转换为pkcs12证书。
       
         <li>
           <a href="/article/基于Go博客wblog的理解和修改/">基于Go博客wblog的理解和修改</a>
-        </li>
-      
-        <li>
-          <a href="/article/Python多页签自动化登录/">Python多页签自动化登录</a>
         </li>
       
     </ul>
@@ -758,7 +752,7 @@ mac系统上不支持crt证书，需要转换为pkcs12证书。
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a><span class="archive-list-count">10</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a><span class="archive-list-count">10</span></li></ul>
     </div>
 
         <hr>

@@ -14,11 +14,11 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <title>
         
-          记openvpn客户端安装遇到问题 - vavikast | Blog
+          以注册mysql驱动举例init()函数的注册行为（golang） - vavikast | Blog
         
     </title>
 
-    <link rel="canonical" href="http://www.vavikast.com/article/记openvpn客户端安装遇到问题/">
+    <link rel="canonical" href="http://www.vavikast.com/article/以注册mysql驱动举例init-函数的注册行为（golang）/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -88,14 +88,14 @@
                     <div class="post-heading">
                         <div class="tags">
                             
-                              <a class="tag" href="/tags/#openvpn" title="openvpn">openvpn</a>
+                              <a class="tag" href="/tags/#go" title="go">go</a>
                             
                         </div>
-                        <h1>记openvpn客户端安装遇到问题</h1>
+                        <h1>以注册mysql驱动举例init()函数的注册行为（golang）</h1>
                         <h2 class="subheading"></h2>
                         <span class="meta">
                             Posted by vavikast on
-                            2019-07-23
+                            2020-06-24
                         </span>
                     </div>
                 
@@ -212,19 +212,26 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h4 id="记openvpn客户端安装遇到问题"><strong>记openvpn客户端安装遇到问题</strong></h4>
-<p>因工作需要，最近在研究OPENVPN。因为它免费开源，而且使用社区活跃度较高。<br>
-目前已在windows，IMAC，IPhone，andriod成功部署使用客户端。具体使用方式不再说明，简单说明遇到的问题吧。</p>
-<h5 id="1mac中导入证书的问题">1.MAC中导入证书的问题。</h5>
-<p>mac系统上不支持crt证书，需要转换为pkcs12证书。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl pkcs12 -export -out ca.p12 -inkey ca.key -in ca.crt</span><br></pre></td></tr></table></figure>
-<h5 id="2iphone客户端中导入证书报错">2.iphone客户端中导入证书报错。</h5>
-<p>iphone无法显示的支持证书，需手动将证书添加到ovpn配置文件中。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">#iPhone-OpenVPN客户端配置模板</span><br><span class="line">client</span><br><span class="line">dev tun</span><br><span class="line">connect-retry-max 5</span><br><span class="line">connect-retry 5</span><br><span class="line">resolv-retry 60</span><br><span class="line">#------------------------</span><br><span class="line">remote xxx.xxx.xxx.xxx 3389 tcp-client</span><br><span class="line">#------------------------------------</span><br><span class="line">&lt;http-proxy-user-pass&gt;</span><br><span class="line">kangml</span><br><span class="line">kangml</span><br><span class="line">&lt;/http-proxy-user-pass&gt;</span><br><span class="line">resolv-retry infinite</span><br><span class="line">nobind</span><br><span class="line">persist-key</span><br><span class="line">persist-tun</span><br><span class="line">ns-cert-type server</span><br><span class="line">comp-lzo</span><br><span class="line">verb 3</span><br><span class="line">&lt;ca&gt;</span><br><span class="line">ca.crt CA证书</span><br><span class="line">&lt;/ca&gt;</span><br><span class="line">#----</span><br><span class="line">&lt;cert&gt;</span><br><span class="line">user01.crt 客户端的证书</span><br><span class="line">&lt;/cert&gt;</span><br><span class="line">#----</span><br><span class="line">&lt;key&gt;</span><br><span class="line">user01.key  客户端的秘钥</span><br><span class="line">&lt;/key&gt;</span><br><span class="line">#----</span><br><span class="line">key-direction 1</span><br><span class="line">&lt;tls-auth&gt;</span><br><span class="line">ta.key      TLS-auth密钥</span><br><span class="line">&lt;/tls-auth&gt;</span><br><span class="line">#----</span><br><span class="line">auth-user-pass</span><br><span class="line">#----</span><br><span class="line"></span><br><span class="line">注明： </span><br><span class="line">	1.模板只是参考</span><br><span class="line">	2.通过vim ca.crt 粘贴复制证书里面的文件。</span><br><span class="line">	3.需要注意的是user01.key 客户端的秘钥，不需要全部复制.只需要最后面的 ----BEGIN CERTIFICATE----到----END CERTIFICATE---- 包括这两句都要一起复制。</span><br></pre></td></tr></table></figure>
-<h5 id="3记iphone-xr系列openvpn网络无法连接">3.记iphone xr系列openvpn网络无法连接。</h5>
-<p>​    在IPhone xs和IPhone xr 使用客户端时，提示&quot;network is unavailable， please try to connect later with active network&quot;</p>
-<p>​    原因是openvpn没有触发IOS的授权，一直无法获取IPhone的网络授权。</p>
-<p>​     方法： 转到主界面，点击private tunnel,点击agree，点击sign up，然后允许使用蜂窝网络和无线网络，就可以正常使用了。</p>
+                <p>Go语言中的database/sql包提供了保证SQL或类SQL数据库的泛用接口，并不提供具体的数据库驱动。使用database/sql包时必须注入（至少）一个数据库驱动。</p>
+<p>​		但是import _ “<a href="http://github.com/go-sql-driver/mysql" target="_blank" rel="noopener">github.com/go-sql-driver/mysql</a>” 的意义不是很好理解。</p>
+<p>​		为此，我通过自己写的三个简单程序，演示init()的注册行为。</p>
+<p>​</p>
+<p>代码的目录组织结构如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">awesomeProject/talkischeap/main.go  //主函数</span><br><span class="line">awesomeProject/talkischeap/showmecode/main.go  // 类型定义函数</span><br><span class="line">awesomeProject/talkischeap/showyourcode/main.go //init()函数</span><br></pre></td></tr></table></figure>
+<p>主函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import &quot;awesomeProject/talkischeap/showmecode&quot;  //类比database/sql</span><br><span class="line">import _ &quot;awesomeProject/talkischeap/showyourcode&quot; //类比github.com/go-sql-driver/mysql</span><br><span class="line">//import _ &quot;github.com/go-sql-driver/mysql&quot;</span><br><span class="line">//import &quot;database/sql&quot;</span><br><span class="line">func main()  &#123;</span><br><span class="line">	// 程序运行的顺序 (1)引入的包 (2) 当前包中的常量 (3) 当前包中的变量（4）当前包的init （5）main函数</span><br><span class="line">	//本例解释如下</span><br><span class="line">	//1. 导入showmecode包时，导入了showmecode的包中的变量driver，这是个引用类型。</span><br><span class="line">	//2. 导入showyourcode包时,导入了init函数，init函数调用了showmecode中的Register函数。</span><br><span class="line">	//3.driver被赋值。影响了全局的driver。</span><br><span class="line">	//4.main函数中调用showmecode.printDriver()函数，把driver的内容打印出来.</span><br><span class="line"></span><br><span class="line">	//直接打印driver的值</span><br><span class="line">	showmecode.PrintDriver()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">运行结果如下：</span><br><span class="line">map[Driver :  yes,It&apos;s it!]</span><br></pre></td></tr></table></figure>
+<p>showmecode代码包</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">package showmecode</span><br><span class="line"></span><br><span class="line">import &quot;fmt&quot;</span><br><span class="line"></span><br><span class="line">//声明map类型数据driver</span><br><span class="line">var driver = make(map[string]string)</span><br><span class="line"></span><br><span class="line">//注册函数： 注册driver</span><br><span class="line">func Register(name string, value string) &#123;</span><br><span class="line">	driver[name] = value</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//打印函数： 打印driver</span><br><span class="line">func PrintDriver() &#123;</span><br><span class="line">	fmt.Println(driver)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>showyourcode代码包</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">package showyourcode</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;awesomeProject/talkischeap/showmecode&quot;</span><br><span class="line">)</span><br><span class="line">//init()当作注册使用，调用了showcode的代码</span><br><span class="line">func init()  &#123;</span><br><span class="line">	showmecode.Register(&quot;Driver &quot;,&quot;  yes,It&apos;s it!&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​</p>
+<p>​		简单梳理了init函数的注册行为，但是mysql的驱动注册并没有那么简单，只是抛砖引玉，后续深入理解后再做详细说明。</p>
+<p>​</p>
+<p>参考连接：</p>
+<p><a href="https://zhuanlan.zhihu.com/p/34211611" target="_blank" rel="noopener">5分钟理解golang的init函数</a></p>
+<p><a href="https://hacpai.com/article/1573025534337" target="_blank" rel="noopener">golangmysql驱动的解析</a></p>
+<p><a href="https://www.cnblogs.com/shengulong/p/10230644.html" target="_blank" rel="noopener">导入包的截个说明</a></p>
 
                 
 
@@ -232,13 +239,9 @@
                 <!-- Pager -->
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/article/搭建办公环境ElasticSearch日志分析系统/" data-toggle="tooltip" data-placement="top" title="搭建办公环境ElasticSearch日志分析系统">&larr; Previous Post</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/article/Prometheus配置钉钉告警/" data-toggle="tooltip" data-placement="top" title="Prometheus配置钉钉告警">Next Post &rarr;</a>
+                            <a href="/article/Golang使用selenium操作Chrome/" data-toggle="tooltip" data-placement="top" title="Golang使用selenium操作Chrome">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -294,7 +297,7 @@
         <div id="toc" class="toc-article">
         <strong class="toc-title">Contents</strong>
         
-          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#记openvpn客户端安装遇到问题"><span class="toc-nav-number">1.</span> <span class="toc-nav-text"><strong>&#x8BB0;openvpn&#x5BA2;&#x6237;&#x7AEF;&#x5B89;&#x88C5;&#x9047;&#x5230;&#x95EE;&#x9898;</strong></span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#1mac中导入证书的问题"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">1.MAC&#x4E2D;&#x5BFC;&#x5165;&#x8BC1;&#x4E66;&#x7684;&#x95EE;&#x9898;&#x3002;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#2iphone客户端中导入证书报错"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">2.iphone&#x5BA2;&#x6237;&#x7AEF;&#x4E2D;&#x5BFC;&#x5165;&#x8BC1;&#x4E66;&#x62A5;&#x9519;&#x3002;</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#3记iphone-xr系列openvpn网络无法连接"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">3.&#x8BB0;iphone xr&#x7CFB;&#x5217;openvpn&#x7F51;&#x7EDC;&#x65E0;&#x6CD5;&#x8FDE;&#x63A5;&#x3002;</span></a></li></ol></li></ol>
+          <ol class="nav">none</ol>
         
         </div>
       </aside>
@@ -314,7 +317,7 @@
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#openvpn" title="openvpn">openvpn</a>
+                          <a class="tag" href="/tags/#go" title="go">go</a>
                         
                     </div>
                 </section>
