@@ -7,6 +7,14 @@
     </url>
 
     <url>
+        <loc>http://www.vavikast.com/article/Golang%E4%B9%8BProtobuf%E6%A0%BC%E5%BC%8F%E5%AE%9A%E4%B9%89%E5%92%8C%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90/</loc>
+        <lastmod>2020-07-29T08:44:57.943Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>http://www.vavikast.com/article/%E4%BB%A5%E6%B3%A8%E5%86%8Cmysql%E9%A9%B1%E5%8A%A8%E4%B8%BE%E4%BE%8Binit-%E5%87%BD%E6%95%B0%E7%9A%84%E6%B3%A8%E5%86%8C%E8%A1%8C%E4%B8%BA%EF%BC%88golang%EF%BC%89/</loc>
         <lastmod>2020-06-24T03:00:19.884Z</lastmod>
         <changefreq>weekly</changefreq>
