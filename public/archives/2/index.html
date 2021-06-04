@@ -18,7 +18,7 @@
         
     </title>
 
-    <link rel="canonical" href="http://www.vavikast.com/">
+    <link rel="canonical" href="http://www.vavikast.com/archives/2/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -211,31 +211,30 @@
 
 <div class="post-preview">
 
-    <a href="/article/tcp-tw-recle参数引发的SYN重传/">
+    <a href="/article/搭建办公环境ElasticSearch日志分析系统/">
         <h2 class="post-title">
                                  
-            tcp_tw_recle参数引发的SYN重传
+            搭建办公环境ElasticSearch日志分析系统
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            公司的网络环境下打开App加载奇慢或者无响应，特此记录下曲折的排错历程。这是一个从网络到服务器，从SYN不断重传转到net.ipv4.tcp_tw_recycle = 0的过程。作为公司的网络管理者，我想说不能局限于别人的怀疑，不能局限于自己的思维定式，要不然解决问题真的很难。
-问题背景：
-​		   公司的开发的APP在获取数据的时候无法加载，或者加载极慢。刚开始发现问题时表现如下：
-
-
-......
+            搭建办公环境ElasticSearch 日志分析系统
+​			计划将公司的防火墙+交换机+服务器（centos7）+ Vmware+Windows server纳入到监控范围，所以开启了ELK监控之旅。
+​			本文采用ELK架构栈进行组建，万丈高楼平地起，虽然开始比较简陋，后期会不断完善这个日志分析系统。
+​	全文框架如下：
+​			Hillstone：                  ......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by vavikast on
-            2021-06-04
+            2019-12-20
         </p>
         <div class="tags">
             
-              <a href="/tags/#TCP/IP" title="TCP/IP">TCP/IP</a>
+              <a href="/tags/#elasticsearch" title="elasticsearch">elasticsearch</a>
             
         </div>
     
@@ -245,28 +244,31 @@
 
 <div class="post-preview">
 
-    <a href="/article/Golang之SSH理解/">
+    <a href="/article/记openvpn客户端安装遇到问题/">
         <h2 class="post-title">
                                  
-            Golang之SSH理解
+            记openvpn客户端安装遇到问题
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            以前写过Golang通过SSH执行交换机操作，但是对于证书认证这一块没有深究。这次通过读gopkg文件，理解更深了一步。
-代码案例
-123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566package ......
+            记openvpn客户端安装遇到问题
+因工作需要，最近在研究OPENVPN。因为它免费开源，而且使用社区活跃度较高。
+目前已在windows，IMAC，IPhone，andriod成功部署使用客户端。具体使用方式不再说明，简单说明遇到的问题吧。
+1.MAC中导入证书的问题。
+mac系统上不支持crt证书，需要转换为pkcs12证书。
+1openssl pkcs12 -export -out c......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by vavikast on
-            2021-03-26
+            2019-07-23
         </p>
         <div class="tags">
             
-              <a href="/tags/#golang" title="golang">golang</a>
+              <a href="/tags/#openvpn" title="openvpn">openvpn</a>
             
         </div>
     
@@ -276,38 +278,112 @@
 
 <div class="post-preview">
 
-    <a href="/article/使用velero去备份k8s集群/">
+    <a href="/article/Prometheus配置钉钉告警/">
         <h2 class="post-title">
                                  
-            使用velero去备份k8s集群
+            Prometheus配置钉钉告警
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            先决条件：
-
-k8s&gt;1.10,主要考虑restic的兼容性
-集群内部署dns
-已经安装kubectl
-
-velero安装
+            Prometheus配置钉钉告警
 
 
-下载velero
-123456789101112wget https://github.com/vmware-tanzu/velero/releases/download/v1.5.2/velero-v1.5.2-linux-amd64.tar.gztar -......
+获取钉钉token
+
+
+配置钉钉webhook
+​       钉钉通过机器人提供了一个webhook接口，但是呢钉钉机器人对文件格式有严格要求，所以必须通过特定的格式转换，才能发送给你钉钉的机器人。有人已经写了转换插件，我是个拿来主义者（主要是自己不会搞，先跑起来再说），那就直接用吧。
+
+
+命令行方式
+
+
+安装go语言
+123456789wget -c......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by vavikast on
-            2020-10-28
+            2019-07-13
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#prometheus" title="prometheus">prometheus</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/Alertmanger中邮箱配置/">
+        <h2 class="post-title">
+                                 
+            Alertmanger中邮箱配置
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            alertmanger配置文件-邮箱配置问题。
+123456smtp_smarthost: &apos;smtp.qiye.aliyun.com:465&apos;smtp_hello: &apos;company.com&apos;smtp_from: &apos;username@company.com&apos;smtp_auth_username: &apos;username@co......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by vavikast on
+            2019-07-12
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#prometheus" title="prometheus">prometheus</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/CKA考试总结/">
+        <h2 class="post-title">
+                                 
+            CKA考试总结
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            CKA考试总结
+​        很高兴自己考过了CKA，准备了很长一段时间，总算有所回报。
+​        这次考试，花费了300$，预约的线上考试。最近看着华为云正在推广线下考试，只要一千多人民币，真是莫名心痛。先晒下证书缓解下。
+
+经验说明
+很多人已经分享过自己的经验，多的我就不说了，我只说我认为有用的。
+
+
+考试要求
+
+考试环境：要求安静无人，桌面干净。
+考试方式： 只使用chro......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by vavikast on
+            2019-07-10
         </p>
         <div class="tags">
             
               <a href="/tags/#kubernetes" title="kubernetes">kubernetes</a>
             
-              <a href="/tags/#velero" title="velero">velero</a>
+              <a href="/tags/#cka" title="cka">cka</a>
             
         </div>
     
@@ -317,35 +393,36 @@ velero安装
 
 <div class="post-preview">
 
-    <a href="/article/Golang之Protobuf格式定义和代码生成/">
+    <a href="/article/hello-hexo/">
         <h2 class="post-title">
                                  
-            Golang之Protobuf格式定义和代码生成
+            Hello,Hexo!
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            1.Protobuf格式定义（首部）
-
-protobuf代码说明
-
-addresssbook.proto
-  1234567891011121314151617181920212223242526272829303132333435syntax = &quot;proto3&quot;;  //指定proto为版本3package tutorial;  //包命名，确保不同项目的包名不冲突，......
+            Hello,Hexo!
+FF
+我来了！  一直耀眼闪亮++
+前
+你好，我来了。
+换博客的想法有一段时间了。起因还是嫌弃自己搭建的博客丑，而自己暂时无力优化界面，只能退而求其次，追求成熟的方案。
+而那些打动我的博客都是基于hexo，所以我来了。
+最终选择胡伟煌的主题。没有太多理由，就是其他的我没有看上。
+中
+好吧，我崩了。
+HEXO，好看是好看，但因是静态架构，对于我全方位作战的人是不友好的。......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by vavikast on
-            2020-07-29
+            2019-07-09
         </p>
         <div class="tags">
             
-              <a href="/tags/#golang" title="golang">golang</a>
-            
-              <a href="/tags/#protobuf" title="protobuf">protobuf</a>
-            
-              <a href="/tags/#grpc" title="grpc">grpc</a>
+              <a href="/tags/#life" title="life">life</a>
             
         </div>
     
@@ -355,177 +432,53 @@ addresssbook.proto
 
 <div class="post-preview">
 
-    <a href="/article/以注册mysql驱动举例init-函数的注册行为（golang）/">
+    <a href="/article/kubernetes-v1-14-3-HA集群安装/">
         <h2 class="post-title">
                                  
-            以注册mysql驱动举例init()函数的注册行为（golang）
+            kubernetes v1.14.3 HA集群安装
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            Go语言中的database/sql包提供了保证SQL或类SQL数据库的泛用接口，并不提供具体的数据库驱动。使用database/sql包时必须注入（至少）一个数据库驱动。
-​		但是import _ “github.com/go-sql-driver/mysql” 的意义不是很好理解。
-​		为此，我通过自己写的三个简单程序，演示init()的注册行为。
-​
-代码的目录组织结构如下：
-12......
+            kubernetes v1.14.3 HA集群安装
+目录结构
+
+
+集群规划
+
+
+
+主机名
+ip
+角色
+组件
+
+
+
+
+master1-3
+192.168.14.138-140
+master+etcd
+etcd kube-apiserver kube-controller-manager kubectl kubeadm kubelet kube-proxy flannel
+
+
+worker1
+1......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by vavikast on
-            2020-06-24
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#go" title="go">go</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/Golang使用selenium操作Chrome/">
-        <h2 class="post-title">
-                                 
-            Golang使用selenium操作Chrome
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            Golang使用selenium操作Chrome
-1.需求
-​		解决自动化登录的问题，顺便可以解决爬虫问题。
-2.基本概念
-​		selenium：  Selenium 是一个用于 Web 应用程序测试的工具，Selenium 测试直接自动运行在浏览器中，就像真正的用户在手工操作一样。
-​		webdriver:   chromeDriver是谷歌为网站开发人员提供的自动化测试工具。
-​	......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by vavikast on
-            2020-05-28
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#golang" title="golang">golang</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/Windows下Go程序添加图标/">
-        <h2 class="post-title">
-                                 
-            Windows下Go程序添加图标
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            计划使用go语言编译一系列实用工具，提高自己的工作效率。发现编译后的.exe文件没有图标，甚是难看，所以找了windows平台下添加Go程序图标的方法。
-1. 查找ico图标
-​		查找一个符合程序气质的图标，下载备用。
-​		ico链图标下载： easyicon
-2.生成syso文件
-​        rsrc是在Windows的Go程序中嵌入.ico和manifest资源的工具。
-2.1......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by vavikast on
-            2020-04-27
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#golang" title="golang">golang</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/K8S-Helm-部署-ELK-7-6/">
-        <h2 class="post-title">
-                                 
-            K8S: Helm 部署 ELK 7.6
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            场景
-​		在 K8S 上部署有状态应用 ELK，收集日常测试数据的上报（应用拨测的 Heartbeat、调用链追踪的 APM、性能指标 metabeat 等）。本文通过rook提供底层存储，用于安装elk的statefulset，然后部署MetalLB实现本地负载均衡，最后通过ingress-control实现访问kibana。
-操作步骤
-
-1.安装rook
-2.安装helm
-3.安装ES......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by vavikast on
-            2020-04-01
+            2019-07-09
         </p>
         <div class="tags">
             
               <a href="/tags/#kubernetes" title="kubernetes">kubernetes</a>
             
-              <a href="/tags/#rook" title="rook">rook</a>
+              <a href="/tags/#etcd" title="etcd">etcd</a>
             
-              <a href="/tags/#elk" title="elk">elk</a>
-            
-        </div>
-    
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/article/基于Go博客wblog的理解和修改/">
-        <h2 class="post-title">
-                                 
-            基于Go博客wblog的理解和修改
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            基于Go博客wblog的理解和修改。
-初衷
-​		自学Go语言已经一段时间，想通过博客更深入理解go语言。最终通过Gin语言定位了wblog博客框架。wblog是基于基于gin+gorm开发的个人博客项目。
-​		学习别人的博客是一个抓狂的过程，不仅要疯狂学习扩展的知识，比如gin框架，gorm，还要理解原作者的思想和构建过程。
-​		原项目仅做了简单的英文注释。我则根据原项目增添了很多自己......
-        </div>
-    </a>
-    
-        <p class="post-meta" style="margin: 10px 0;">
-            Posted by vavikast on
-            2020-02-07
-        </p>
-        <div class="tags">
-            
-              <a href="/tags/#golang" title="golang">golang</a>
-            
-              <a href="/tags/#gin" title="gin">gin</a>
-            
-              <a href="/tags/#gorm" title="gorm">gorm</a>
+              <a href="/tags/#ha" title="ha">ha</a>
             
         </div>
     
@@ -535,38 +488,106 @@ addresssbook.proto
 
 <div class="post-preview">
 
-    <a href="/article/Python多页签自动化登录/">
+    <a href="/article/Prometheus系统下vmware-exporter配置/">
         <h2 class="post-title">
                                  
-            Python多页签自动化登录
+            Prometheus系统下vmware_exporter配置
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            Python多页签自动化登录
-​		自己管理了好几个系统，虽然实现自动监控报警，但是还还想要人工检查。为了提高效率，现在写了一个脚本实现多个系统的自动化登录。
-脚本选择：
+            Prometheus系统下vmware_exporter配置
+为了方便管理设备，搞起了Prometheus。今天从vmware_exporter开始，监控起来我的vmware vsphere集群。
 
-开始想用bat实现，发现走不通，账号和密码登录认证的方式无法解决。有方法的小伙伴可以推荐。
-后面使用python实现，主要是方案成熟，可参考案例多啊。
-
-浏览器选择
-​		chrome浏览器：因为习惯了。
-事前准备
+vmware_exporter由于编译问题不成功，选择使用docker方式执行。vmware_exporter
 
 
-......
+编辑配置文件config.yml
+为了配置prometheus的文件发现服务，......
         </div>
     </a>
     
         <p class="post-meta" style="margin: 10px 0;">
             Posted by vavikast on
-            2019-12-30
+            2019-07-09
         </p>
         <div class="tags">
             
-              <a href="/tags/#python" title="python">python</a>
+              <a href="/tags/#vmware" title="vmware">vmware</a>
+            
+              <a href="/tags/#prometheus" title="prometheus">prometheus</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/通过docker搭建openvpn/">
+        <h2 class="post-title">
+                                 
+            通过docker搭建openvpn
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            通过docker搭建openvpn
+1、安装docker
+yum install yum-utils device-mapper-persistent-data lvm2 -y
+curl -L https://download.docker.com/linux/centos/docker-ce.repo -o /etc/yum.repos.d/docker-ce.repo
+sed -i 's......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by vavikast on
+            2019-07-09
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#openvpn" title="openvpn">openvpn</a>
+            
+              <a href="/tags/#docker" title="docker">docker</a>
+            
+              <a href="/tags/#easyrsa" title="easyrsa">easyrsa</a>
+            
+        </div>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/article/kubernetest-master-节点恢复灾备恢复操作指南/">
+        <h2 class="post-title">
+                                 
+            kubernetest master 节点恢复灾备恢复操作指南
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            kubernetest master 节点恢复灾备恢复操作指南
+本文基本转载别人文章，文末会标明出处。
+1. 基本说明
+本文档简述了Kubernetes主节点灾备恢复的相关步骤，供在发生k8s master崩溃时操作。k8s里部署了etcd群集, 主节点控制组件的高可用节点，灾备恢复也是必须要实现的操作，才能形成完备的企业级服务方案。K8s集群在master节点发生故障时，并不会影响已有的p......
+        </div>
+    </a>
+    
+        <p class="post-meta" style="margin: 10px 0;">
+            Posted by vavikast on
+            2019-07-09
+        </p>
+        <div class="tags">
+            
+              <a href="/tags/#kubernetes" title="kubernetes">kubernetes</a>
+            
+              <a href="/tags/#etcd" title="etcd">etcd</a>
             
         </div>
     
@@ -580,9 +601,13 @@ addresssbook.proto
 
 <ul class="pager">
     
+        <li class="previous">
+            <a href="/">&larr; Newer Posts</a>
+        </li>
+    
     
         <li class="next">
-            <a href="/archives/2/">Older Posts &rarr;</a>
+            <a href="/archives/3/">Older Posts &rarr;</a>
         </li>
     
 </ul>
