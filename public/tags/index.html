@@ -134,7 +134,7 @@
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -148,7 +148,7 @@
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
@@ -198,6 +198,8 @@
             <!-- 标签云 -->
             <div id='tag_cloud' class="tags">
                 
+                    <a href="#prometheus" title="prometheus" rel="3">prometheus</a>
+                
                     <a href="#cfssl" title="cfssl" rel="1">cfssl</a>
                 
                     <a href="#kubernetes" title="kubernetes" rel="6">kubernetes</a>
@@ -216,17 +218,17 @@
                 
                     <a href="#vmware" title="vmware" rel="1">vmware</a>
                 
-                    <a href="#prometheus" title="prometheus" rel="3">prometheus</a>
-                
-                    <a href="#python" title="python" rel="1">python</a>
-                
                     <a href="#life" title="life" rel="1">life</a>
                 
                     <a href="#etcd" title="etcd" rel="2">etcd</a>
                 
                     <a href="#ha" title="ha" rel="1">ha</a>
                 
+                    <a href="#python" title="python" rel="1">python</a>
+                
                     <a href="#go" title="go" rel="1">go</a>
+                
+                    <a href="#TCP/IP" title="TCP/IP" rel="1">TCP/IP</a>
                 
                     <a href="#gin" title="gin" rel="1">gin</a>
                 
@@ -246,6 +248,58 @@
 
             <!-- 标签列表 -->
 
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="prometheus">
+                    <span class="tag-text">prometheus</span>
+                </span>
+                
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
+                     <a href="/article/Prometheus配置钉钉告警/">
+                        <h2 class="post-title">
+                            Prometheus配置钉钉告警
+                        </h2>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
+                
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
+                     <a href="/article/Alertmanger中邮箱配置/">
+                        <h2 class="post-title">
+                            Alertmanger中邮箱配置
+                        </h2>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
+                
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
+                     <a href="/article/Prometheus系统下vmware-exporter配置/">
+                        <h2 class="post-title">
+                            Prometheus系统下vmware_exporter配置
+                        </h2>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
+                
+            </div>
             
             <div class="one-tag-list">
                 <span class="fa fa-tag listing-seperator" id="cfssl">
@@ -279,24 +333,9 @@
                   <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
                   </li> -->
                  <div class="post-preview">
-                     <a href="/article/CFSSL使用方法重新整理说明/">
+                     <a href="/article/使用velero去备份k8s集群/">
                         <h2 class="post-title">
-                            CFSSL使用方法重新整理说明
-                        </h2>
-                        
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </div>
-                <hr>
-                
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <div class="post-preview">
-                     <a href="/article/CKA考试总结/">
-                        <h2 class="post-title">
-                            CKA考试总结
+                            使用velero去备份k8s集群
                         </h2>
                         
                     </a>
@@ -312,6 +351,21 @@
                      <a href="/article/K8S-Helm-部署-ELK-7-6/">
                         <h2 class="post-title">
                             K8S: Helm 部署 ELK 7.6
+                        </h2>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
+                
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
+                     <a href="/article/CKA考试总结/">
+                        <h2 class="post-title">
+                            CKA考试总结
                         </h2>
                         
                     </a>
@@ -354,9 +408,9 @@
                   <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
                   </li> -->
                  <div class="post-preview">
-                     <a href="/article/使用velero去备份k8s集群/">
+                     <a href="/article/CFSSL使用方法重新整理说明/">
                         <h2 class="post-title">
-                            使用velero去备份k8s集群
+                            CFSSL使用方法重新整理说明
                         </h2>
                         
                     </a>
@@ -581,80 +635,6 @@
             </div>
             
             <div class="one-tag-list">
-                <span class="fa fa-tag listing-seperator" id="prometheus">
-                    <span class="tag-text">prometheus</span>
-                </span>
-                
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <div class="post-preview">
-                     <a href="/article/Prometheus系统下vmware-exporter配置/">
-                        <h2 class="post-title">
-                            Prometheus系统下vmware_exporter配置
-                        </h2>
-                        
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </div>
-                <hr>
-                
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <div class="post-preview">
-                     <a href="/article/Prometheus配置钉钉告警/">
-                        <h2 class="post-title">
-                            Prometheus配置钉钉告警
-                        </h2>
-                        
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </div>
-                <hr>
-                
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <div class="post-preview">
-                     <a href="/article/Alertmanger中邮箱配置/">
-                        <h2 class="post-title">
-                            Alertmanger中邮箱配置
-                        </h2>
-                        
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </div>
-                <hr>
-                
-            </div>
-            
-            <div class="one-tag-list">
-                <span class="fa fa-tag listing-seperator" id="python">
-                    <span class="tag-text">python</span>
-                </span>
-                
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <div class="post-preview">
-                     <a href="/article/Python多页签自动化登录/">
-                        <h2 class="post-title">
-                            Python多页签自动化登录
-                        </h2>
-                        
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </div>
-                <hr>
-                
-            </div>
-            
-            <div class="one-tag-list">
                 <span class="fa fa-tag listing-seperator" id="life">
                     <span class="tag-text">life</span>
                 </span>
@@ -736,6 +716,28 @@
             </div>
             
             <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="python">
+                    <span class="tag-text">python</span>
+                </span>
+                
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
+                     <a href="/article/Python多页签自动化登录/">
+                        <h2 class="post-title">
+                            Python多页签自动化登录
+                        </h2>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
                 <span class="fa fa-tag listing-seperator" id="go">
                     <span class="tag-text">go</span>
                 </span>
@@ -748,6 +750,28 @@
                      <a href="/article/以注册mysql驱动举例init-函数的注册行为（golang）/">
                         <h2 class="post-title">
                             以注册mysql驱动举例init()函数的注册行为（golang）
+                        </h2>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="TCP/IP">
+                    <span class="tag-text">TCP/IP</span>
+                </span>
+                
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
+                     <a href="/article/tcp-tw-recle参数引发的SYN重传/">
+                        <h2 class="post-title">
+                            tcp_tw_recle参数引发的SYN重传
                         </h2>
                         
                     </a>
@@ -833,9 +857,9 @@
                   <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
                   </li> -->
                  <div class="post-preview">
-                     <a href="/article/通过docker搭建openvpn/">
+                     <a href="/article/记openvpn客户端安装遇到问题/">
                         <h2 class="post-title">
-                            通过docker搭建openvpn
+                            记openvpn客户端安装遇到问题
                         </h2>
                         
                     </a>
@@ -848,9 +872,9 @@
                   <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
                   </li> -->
                  <div class="post-preview">
-                     <a href="/article/记openvpn客户端安装遇到问题/">
+                     <a href="/article/通过docker搭建openvpn/">
                         <h2 class="post-title">
-                            记openvpn客户端安装遇到问题
+                            通过docker搭建openvpn
                         </h2>
                         
                     </a>
